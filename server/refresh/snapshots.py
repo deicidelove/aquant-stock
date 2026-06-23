@@ -16,3 +16,14 @@ def refresh_quotes(fetch=None) -> int:
     df = df.copy()
     df["ts"] = datetime.now().isoformat(timespec="seconds")
     return store.save("quote_snapshot", df)
+
+
+def refresh_sectors(fetch=None) -> int:
+    """行业板块快照入库 sector_snapshot，返回写入行数。"""
+    fetch = fetch or src.industry_snapshot
+    df = fetch()
+    if df is None or df.empty:
+        return 0
+    df = df.copy()
+    df["ts"] = datetime.now().isoformat(timespec="seconds")
+    return store.save("sector_snapshot", df)
