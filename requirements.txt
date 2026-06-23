@@ -1,0 +1,10 @@
+# A股量化投研系统 - 依赖
+akshare>=1.18.0        # 主数据源：行情/资金流/龙虎榜/北向/板块/财务
+duckdb>=1.0.0          # 本地列式存储引擎
+pandas>=2.0.0
+numpy>=1.24.0
+pyarrow>=14.0.0        # parquet 读写
+streamlit>=1.40.0      # 看盘界面
+plotly>=5.20.0         # 可视化
+tenacity>=8.0.0        # 重试
+pyyaml>=6.0

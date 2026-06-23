@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  macOS launchd 定时任务：每个工作日 16:00（A股收盘后）跑每日例程。
+  安装：
+    cp scripts/com.aquant.daily.plist ~/Library/LaunchAgents/
+    launchctl load ~/Library/LaunchAgents/com.aquant.daily.plist
+  卸载：
+    launchctl unload ~/Library/LaunchAgents/com.aquant.daily.plist
+  注意：Mac 需在 16:00 处于唤醒状态才会触发（合盖休眠不跑）。
+-->
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>com.aquant.daily</string>
+    <key>ProgramArguments</key>
+    <array>
+        <string>/bin/bash</string>
+        <string>/Volumes/demon/code/ml/study/stock/scripts/run_daily.sh</string>
+    </array>
+    <key>StartCalendarInterval</key>
+    <array>
+        <dict><key>Weekday</key><integer>1</integer><key>Hour</key><integer>16</integer><key>Minute</key><integer>0</integer></dict>
+        <dict><key>Weekday</key><integer>2</integer><key>Hour</key><integer>16</integer><key>Minute</key><integer>0</integer></dict>
+        <dict><key>Weekday</key><integer>3</integer><key>Hour</key><integer>16</integer><key>Minute</key><integer>0</integer></dict>
+        <dict><key>Weekday</key><integer>4</integer><key>Hour</key><integer>16</integer><key>Minute</key><integer>0</integer></dict>
+        <dict><key>Weekday</key><integer>5</integer><key>Hour</key><integer>16</integer><key>Minute</key><integer>0</integer></dict>
+    </array>
+    <key>StandardOutPath</key>
+    <string>/Volumes/demon/code/ml/study/stock/logs/launchd.out.log</string>
+    <key>StandardErrorPath</key>
+    <string>/Volumes/demon/code/ml/study/stock/logs/launchd.err.log</string>
+    <key>RunAtLoad</key>
+    <false/>
+</dict>
+</plist>
