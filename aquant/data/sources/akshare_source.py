@@ -303,6 +303,21 @@ def index_daily(index_code: str = "sh000300") -> pd.DataFrame:
     return df[["code", "date", "close"]].sort_values("date").reset_index(drop=True)
 
 
+# ---------------------------------------------------------------- 现价快照
+
+_SPOT_MAP = {"代码": "code", "名称": "name", "最新价": "close",
+             "涨跌幅": "pct_chg", "换手率": "turnover", "成交额": "amount"}
+
+
+@_robust
+def spot_snapshot() -> pd.DataFrame:
+    """全市场现价快照（盘中分钟级）。columns=[code,name,close,pct_chg,turnover,amount]。"""
+    df = ak.stock_zh_a_spot_em().rename(columns=_SPOT_MAP)
+    df["code"] = df["code"].astype(str).str.zfill(6)
+    keep = list(_SPOT_MAP.values())
+    return df[[c for c in keep if c in df.columns]].copy()
+
+
 # ---------------------------------------------------------------- 龙虎榜
 
 @_robust
