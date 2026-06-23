@@ -71,7 +71,7 @@ def seed_db():
             px = base + i * 0.05
             rows.append({"code": code, "date": d, "open": px, "high": px * 1.02,
                          "low": px * 0.98, "close": px, "volume": 1e6 + i,
-                         "amount": px * 1e6, "turnover": 1.5, "pct_chg": 0.5})
+                         "amount": px * 1e7, "turnover": 1.5, "pct_chg": 0.5})
     store.save("daily_bar", pd.DataFrame(rows))
     store.save("stock_basic", pd.DataFrame(
         [{"code": "600000", "name": "浦发银行", "market": "sh"},
@@ -96,7 +96,7 @@ def test_health_ok(client):
     body = r.json()
     assert body["status"] == "ok"
     assert body["db"] is True
-    assert body["latest_bar_date"] == "2026-04-21"  # 80 个工作日后的最后一日
+    assert body["latest_bar_date"] == "2026-04-22"  # 80 个工作日后的最后一日
 ```
 
 - [ ] **Step 4: 运行测试确认失败**
@@ -411,7 +411,7 @@ def test_materialize_then_read(seed_db):
     top = scores.read_top_scores(top=1)
     assert len(top) == 1
     assert set(["code", "name", "score", "as_of"]).issubset(top.columns)
-    assert top["as_of"].iloc[0] == "2026-04-21"  # daily_bar 最新日
+    assert top["as_of"].iloc[0] == "2026-04-22"  # daily_bar 最新日
 ```
 
 - [ ] **Step 3: 运行确认失败**
