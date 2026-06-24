@@ -25,3 +25,23 @@ def test_sectors(client, seed_db, monkeypatch):
     body = r.json()
     assert body["rows"][0]["sector"] == "银行"      # pct_chg 最高在前
     assert body["rotation"]["leaders"] == ["银行"]
+
+
+def test_top_scores(client, seed_db):
+    from server.refresh import scores
+    scores.materialize_scores()
+    r = client.get("/api/cockpit/top-scores?top=1")
+    assert r.status_code == 200
+    body = r.json()
+    assert len(body["rows"]) == 1
+    assert "score" in body["rows"][0]
+
+
+def test_picks(client, seed_db, monkeypatch):
+    import pandas as pd
+    from aquant import research
+    monkeypatch.setattr(research, "daily_picks",
+                        lambda **k: pd.DataFrame([{"code": "600000", "name": "浦发", "score": 1.2}]))
+    r = client.get("/api/cockpit/picks?top=3")
+    assert r.status_code == 200
+    assert r.json()["rows"][0]["code"] == "600000"
