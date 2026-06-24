@@ -2,7 +2,7 @@ from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
 
-from server.routers import cockpit, health
+from server.routers import cockpit, health, stock
 
 
 def create_app(start_scheduler: bool = True) -> FastAPI:
@@ -22,4 +22,5 @@ def create_app(start_scheduler: bool = True) -> FastAPI:
     app = FastAPI(title="Aquant API", version="2.0", lifespan=lifespan)
     app.include_router(health.router)
     app.include_router(cockpit.router)
+    app.include_router(stock.router)
     return app
