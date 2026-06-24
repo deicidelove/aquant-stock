@@ -33,6 +33,11 @@ def _eod_job() -> None:
         scores.materialize_scores()
     except Exception:  # noqa: BLE001
         pass
+    try:
+        from server.refresh.research_cache import prefetch_research
+        prefetch_research()
+    except Exception:  # noqa: BLE001
+        pass
 
 
 def build_scheduler() -> BackgroundScheduler:
