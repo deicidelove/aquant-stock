@@ -83,3 +83,10 @@ python -m aquant.cli sectors                # 行业板块当日快照
    别为听起来高级的优化买单。见 `scripts/weighting_compare.py`。
 
 > 投资有风险。本系统所有输出仅供研究参考，不构成投资建议。
+
+## v2 后端（FastAPI）
+
+    python3 -m server          # 启动 API + 后台刷新调度（127.0.0.1:8000）
+    curl localhost:8000/api/health
+
+端点：/api/cockpit/overview · /sectors · /top-scores · /picks · /api/stock/{code}/kline · /report
