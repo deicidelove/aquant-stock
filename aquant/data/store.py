@@ -24,6 +24,11 @@ TABLE_KEYS: dict[str, list[str]] = {
     "index_daily": ["code", "date"],
     "fundamental": ["code", "date"],
     "picks_log": ["as_of", "code"],
+    "quote_snapshot": ["code", "ts"],
+    "sector_snapshot": ["sector", "ts"],
+    "factor_score": ["code", "as_of"],
+    "news_cache": ["code", "as_of"],
+    "fund_context_cache": ["code", "as_of"],
 }
 
 
