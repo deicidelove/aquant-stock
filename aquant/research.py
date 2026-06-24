@@ -155,7 +155,7 @@ def daily_picks(top: int = 20, signal: str = "ma_cross",
     return pd.DataFrame(rows)
 
 
-def stock_report(code: str, market_scores: pd.DataFrame | None = None) -> dict:
+def stock_report(code: str, market_scores: pd.DataFrame | None = None, offline: bool = False) -> dict:
     """单只股票研投报告数据：区间表现 + 因子明细 + 择时 + 关键价位 + 资金流。
 
     market_scores: 可选的全市场 (code,score) 表，用于算综合分与排名；不传则现算。
@@ -205,8 +205,12 @@ def stock_report(code: str, market_scores: pd.DataFrame | None = None) -> dict:
     # 近期资讯 + 关键词识别利好/利空（规则化，无 LLM）
     news, catalysts, alerts = [], [], []
     try:
-        from .data.sources.news import stock_news
-        news = stock_news(code, limit=8)
+        if offline:
+            from .data import research_cache
+            news = research_cache.read_news(code)
+        else:
+            from .data.sources.news import stock_news
+            news = stock_news(code, limit=8)
     except Exception:
         news = []
     _POS = ("中标", "回购", "增持", "预增", "扭亏", "新高", "合作", "获批", "订单", "分红", "重组")
@@ -228,8 +232,13 @@ def stock_report(code: str, market_scores: pd.DataFrame | None = None) -> dict:
         if not vr.empty:
             val_row = {k: (float(vr[k].iloc[0]) if pd.notna(vr[k].iloc[0]) else None) for k in vr.columns}
     try:
-        from .data.sources import fundamental as fund
-        fctx = fund.context(code, valuation_row=val_row)
+        if offline:
+            from .data import research_cache
+            fctx = research_cache.read_context(code) or {
+                "valuation": val_row, "financial": {}, "chip": {}, "dividend": {}}
+        else:
+            from .data.sources import fundamental as fund
+            fctx = fund.context(code, valuation_row=val_row)
     except Exception:
         fctx = {"valuation": val_row, "financial": {}, "chip": {}, "dividend": {}}
 
@@ -304,13 +313,13 @@ def report_markdown(rep: dict) -> str:
     return "\n".join(lines)
 
 
-def decision(code: str, rep: dict | None = None) -> dict:
+def decision(code: str, rep: dict | None = None, offline: bool = False) -> dict:
     """决策仪表盘：把多维数据融合成可执行结论。
 
     哲学锚定已验证的策略——低波 + 反转 + 季度持有；基本面做质量校验，
     资金/筹码做确认，技术位给买卖点。输出 核心结论 + 作战计划 + 风险。
     """
-    rep = rep or stock_report(code)
+    rep = rep or stock_report(code, offline=offline)
     if not rep:
         return {}
     fc = rep.get("fundamental", {})
