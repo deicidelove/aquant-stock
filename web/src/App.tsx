@@ -1,3 +1,12 @@
+import { Routes, Route } from "react-router-dom";
+import Cockpit from "./pages/Cockpit";
+import StockDetail from "./pages/StockDetail";
+
 export default function App() {
-  return <div className="p-4 text-xl font-bold">Aquant 驾驶舱</div>;
+  return (
+    <Routes>
+      <Route path="/" element={<Cockpit />} />
+      <Route path="/stock/:code" element={<StockDetail />} />
+    </Routes>
+  );
 }
