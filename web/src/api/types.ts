@@ -25,3 +25,22 @@ export interface Decision {
   [k: string]: unknown;
 }
 export interface Report { code: string; decision: Decision }
+
+export interface Holding {
+  code: string; name: string; shares: number; avg_cost: number;
+  last_price: number | null; market_value: number; unrealized: number;
+  unrealized_pct: number; alerts: string[];
+}
+export interface HoldingsResp { rows: Holding[] }
+
+export interface Trade { tid: number; date: string; code: string; side: string; shares: number; price: number; note: string }
+export interface TradesResp { rows: Trade[] }
+
+export interface Pnl { realized: number; unrealized: number; total: number }
+
+export interface TradeInput { date: string; code: string; side: string; shares: number; price: number; note?: string }
+
+export interface BriefingRow { code: string; name: string; [k: string]: unknown }
+export interface BriefingResp { rows: BriefingRow[] }
+
+export interface ScorecardResp { as_of: string | null; rows: Record<string, unknown>[] }
