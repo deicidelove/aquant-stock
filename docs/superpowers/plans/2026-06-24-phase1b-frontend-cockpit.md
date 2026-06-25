@@ -84,9 +84,10 @@ web/dist/
 }
 ```
 
-`web/vite.config.ts`：
+`web/vite.config.ts`（注意：从 `vitest/config` 导入 `defineConfig`，它在 vite 配置基础上补充了 `test` 字段类型；用 `vite` 的 `defineConfig` 会因 `test` 多余属性触发 TS 报错、`tsc -b` 构建失败）：
 ```typescript
-import { defineConfig } from "vite";
+/// <reference types="vitest/config" />
+import { defineConfig } from "vitest/config";
 import react from "@vitejs/plugin-react";
 
 export default defineConfig({
