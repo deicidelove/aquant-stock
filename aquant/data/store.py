@@ -30,6 +30,7 @@ TABLE_KEYS: dict[str, list[str]] = {
     "news_cache": ["code", "as_of"],
     "fund_context_cache": ["code", "as_of"],
     "trades": ["tid"],
+    "quant_jobs": ["job_id"],
 }
 
 

@@ -7,6 +7,7 @@ import pytest
 # 必须在 import 任何 aquant 模块之前设置数据目录
 _TMP = tempfile.mkdtemp(prefix="aquant_test_")
 os.environ["AQUANT_DATA_DIR"] = _TMP
+os.environ["AQUANT_JOBS_SYNC"] = "1"  # 量化任务测试同步执行（不起线程，确定性）
 
 
 @pytest.fixture(autouse=True)
