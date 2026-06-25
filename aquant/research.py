@@ -447,7 +447,7 @@ def decision(code: str, rep: dict | None = None, offline: bool = False) -> dict:
     }
 
 
-def briefing(top: int = 12, weights: dict | None = None) -> pd.DataFrame:
+def briefing(top: int = 12, weights: dict | None = None, offline: bool = False) -> pd.DataFrame:
     """荐股研报快览：对 IC 候选池逐只跑多维决策，汇成一张速览表。
 
     把"选股(IC) → 多维研判(基本面/资金/风险/资讯)"打通，一眼看清每只候选的
@@ -460,8 +460,8 @@ def briefing(top: int = 12, weights: dict | None = None) -> pd.DataFrame:
     ms = scorer.score_fast(codes=codes, top=10000) if hasattr(scorer, "score_fast") else ranked
     rows = []
     for code in ranked["code"].tolist():
-        rep = stock_report(code, market_scores=ms)
-        d = decision(code, rep=rep)
+        rep = stock_report(code, market_scores=ms, offline=offline)
+        d = decision(code, rep=rep, offline=offline)
         if not d:
             continue
         lv = d["battle_plan"]
