@@ -2,7 +2,7 @@ from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
 
-from server.routers import cockpit, health, holdings, stock
+from server.routers import assist, cockpit, health, holdings, stock
 
 
 def create_app(start_scheduler: bool = True) -> FastAPI:
@@ -24,4 +24,5 @@ def create_app(start_scheduler: bool = True) -> FastAPI:
     app.include_router(cockpit.router)
     app.include_router(stock.router)
     app.include_router(holdings.router)
+    app.include_router(assist.router)
     return app
