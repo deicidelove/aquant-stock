@@ -86,3 +86,11 @@ python -m aquant.cli sectors                # 行业板块当日快照
     curl localhost:8000/api/health
 
 端点：/api/cockpit/overview · /sectors · /top-scores · /picks · /api/stock/{code}/kline · /report
+
+## v2 前端（React 驾驶舱）
+
+    cd web && npm install
+    npm run dev          # http://localhost:5173 （/api 代理到后端 8000）
+
+需后端先起：`python3 -m server`。
+构建：`npm run build`（产物 dist/）。测试：`npm test`（Vitest）。
