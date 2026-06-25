@@ -95,6 +95,35 @@ def holdings() -> list[dict]:
     return out
 
 
+def sell_alerts(code: str, last_price: float | None, dec: dict | None = None) -> list[str]:
+    if last_price is None:
+        return []
+    if dec is None:
+        from .. import research
+        dec = research.decision(code, offline=True)
+    if not dec:
+        return []
+    plan = dec.get("battle_plan", {})
+    alerts = []
+    stop, target = plan.get("stop_loss"), plan.get("take_profit")
+    if stop is not None and last_price <= stop:
+        alerts.append("跌破止损")
+    if target is not None and last_price >= target:
+        alerts.append("到压力位")
+    if str(dec.get("signal", "")).startswith("回避"):
+        alerts.append("信号转空")
+    return alerts
+
+
+def holdings_view() -> list[dict]:
+    out = []
+    for h in holdings():
+        h = dict(h)
+        h["alerts"] = sell_alerts(h["code"], h["last_price"])
+        out.append(h)
+    return out
+
+
 def pnl_summary() -> dict:
     pos = _positions()
     realized = sum(p["realized"] for p in pos.values())

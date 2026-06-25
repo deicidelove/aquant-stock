@@ -28,3 +28,24 @@ def test_holdings_aggregation_and_pnl(seed_db):
     s = holdings.pnl_summary()
     assert round(s["realized"], 2) == 1000.0
     assert round(s["total"], 2) == round(s["realized"] + s["unrealized"], 2)
+
+
+def test_sell_alerts_rules():
+    from aquant.portfolio import holdings
+    dec = {"battle_plan": {"stop_loss": 9.5, "take_profit": 12.0}, "signal": "持有/观望"}
+    assert holdings.sell_alerts("600000", 9.4, dec=dec) == ["跌破止损"]
+    assert holdings.sell_alerts("600000", 12.5, dec=dec) == ["到压力位"]
+    assert holdings.sell_alerts("600000", 10.5, dec=dec) == []
+    dec2 = {"battle_plan": {"stop_loss": 9.5, "take_profit": 12.0}, "signal": "回避/减持"}
+    assert holdings.sell_alerts("600000", 10.5, dec=dec2) == ["信号转空"]
+
+
+def test_holdings_view_attaches_alerts(seed_db, monkeypatch):
+    from aquant.portfolio import holdings
+    from aquant import research
+    # 现价 13.95（fixture），构造止损在其上 → 触发跌破止损
+    monkeypatch.setattr(research, "decision",
+                        lambda code, offline=False: {"battle_plan": {"stop_loss": 14.0, "take_profit": 99.0}, "signal": "持有/观望"})
+    holdings.record_trade("2026-02-02", "600000", "buy", 1000, 10.0)
+    view = {h["code"]: h for h in holdings.holdings_view()}
+    assert view["600000"]["alerts"] == ["跌破止损"]
