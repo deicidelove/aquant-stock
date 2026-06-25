@@ -9,6 +9,15 @@ _TMP = tempfile.mkdtemp(prefix="aquant_test_")
 os.environ["AQUANT_DATA_DIR"] = _TMP
 
 
+@pytest.fixture(autouse=True)
+def _clean_trades():
+    """临时 DuckDB 跨测试共享，交易流水须每测试前清空以保证隔离。"""
+    from aquant.data import store
+    with store.connect() as con:
+        con.execute("DROP TABLE IF EXISTS trades")
+    yield
+
+
 @pytest.fixture()
 def seed_db():
     """向临时 DuckDB 写入最小行情数据：2 只股票、各 80 个交易日。"""
