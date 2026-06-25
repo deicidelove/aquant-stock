@@ -94,3 +94,5 @@ python -m aquant.cli sectors                # 行业板块当日快照
 
 需后端先起：`python3 -m server`。
 构建：`npm run build`（产物 dist/）。测试：`npm test`（Vitest）。
+
+辅助股民板块：选票 `/assist/picks` · 我的持仓 `/assist/holdings`（手动记账+卖出提醒）· 复盘 `/assist/review`。
