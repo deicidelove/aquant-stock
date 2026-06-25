@@ -44,3 +44,20 @@ export interface BriefingRow { code: string; name: string; [k: string]: unknown 
 export interface BriefingResp { rows: BriefingRow[] }
 
 export interface ScorecardResp { as_of: string | null; rows: Record<string, unknown>[] }
+
+export type QuantWeights = { ic: Record<string, number>; momentum: Record<string, number> };
+
+export interface BacktestParams {
+  capital: number; weights: string | Record<string, number>;
+  top_n: number; rebalance_every: number; min_history: number;
+  start?: string; end?: string;
+}
+export interface BacktestResult {
+  nav: { date: string; equity: number; benchmark: number | null }[];
+  metrics: Record<string, number>;
+  top_n: number; rebalance_every: number;
+}
+export interface FactorIcRow { factor: string; ic_mean: number; ic_std: number; ir: number; ic_win: number; n: number }
+export interface FactorIcResult { rows: FactorIcRow[]; fwd: number }
+
+export interface QuantJob<T> { job_id: string; kind: string; status: string; result: T | null; error: string | null }
