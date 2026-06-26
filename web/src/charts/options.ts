@@ -44,3 +44,31 @@ export function buildIndexBarOption(breadth: Record<string, number>): object {
     series: [{ type: "bar", data: [breadth.above_ma20_pct ?? 0, breadth.above_ma60_pct ?? 0] }],
   };
 }
+
+export function buildNavLineOption(nav: { date: string; equity: number; benchmark: number | null }[]): object {
+  return {
+    tooltip: { trigger: "axis" },
+    legend: { data: ["策略", "沪深300"], top: 0 },
+    grid: { left: 50, right: 20, top: 30, bottom: 40 },
+    xAxis: { type: "category", data: nav.map((p) => p.date) },
+    yAxis: { type: "value", scale: true },
+    dataZoom: [{ type: "inside" }, { type: "slider" }],
+    series: [
+      { name: "策略", type: "line", showSymbol: false, data: nav.map((p) => p.equity), itemStyle: { color: "#ef4444" } },
+      { name: "沪深300", type: "line", showSymbol: false, data: nav.map((p) => p.benchmark), itemStyle: { color: "#9ca3af" } },
+    ],
+  };
+}
+
+export function buildFactorIcBarOption(rows: { factor: string; ir: number }[]): object {
+  return {
+    tooltip: { trigger: "axis" },
+    grid: { left: 110, right: 20, top: 10, bottom: 30 },
+    xAxis: { type: "value" },
+    yAxis: { type: "category", data: rows.map((r) => r.factor) },
+    series: [{
+      type: "bar",
+      data: rows.map((r) => ({ value: r.ir, itemStyle: { color: r.ir >= 0 ? "#ef4444" : "#22c55e" } })),
+    }],
+  };
+}

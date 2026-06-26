@@ -5,6 +5,8 @@ import StockDetail from "./pages/StockDetail";
 import AssistPicks from "./pages/AssistPicks";
 import AssistHoldings from "./pages/AssistHoldings";
 import AssistReview from "./pages/AssistReview";
+import QuantBacktest from "./pages/QuantBacktest";
+import QuantFactors from "./pages/QuantFactors";
 
 export default function App() {
   return (
@@ -16,6 +18,8 @@ export default function App() {
         <Route path="/assist/picks" element={<AssistPicks />} />
         <Route path="/assist/holdings" element={<AssistHoldings />} />
         <Route path="/assist/review" element={<AssistReview />} />
+        <Route path="/quant/backtest" element={<QuantBacktest />} />
+        <Route path="/quant/factors" element={<QuantFactors />} />
       </Routes>
     </>
   );

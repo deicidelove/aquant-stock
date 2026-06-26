@@ -1,6 +1,7 @@
 import type {
   Overview, Sectors, TopScores, Picks, Kline, Report,
   HoldingsResp, TradesResp, Pnl, TradeInput, BriefingResp, ScorecardResp,
+  QuantWeights, BacktestParams, BacktestResult, FactorIcResult, QuantJob,
 } from "./types";
 
 async function apiGet<T>(path: string): Promise<T> {
@@ -33,3 +34,9 @@ export const addTrade = (input: TradeInput) => apiSend<{ tid: number }>("/holdin
 export const deleteTrade = (tid: number) => apiSend<{ deleted: number }>(`/holdings/trade/${tid}`, "DELETE");
 export const getBriefing = (top = 12) => apiGet<BriefingResp>(`/assist/briefing?top=${top}`);
 export const getScorecard = () => apiGet<ScorecardResp>("/assist/scorecard");
+
+export const getQuantWeights = () => apiGet<QuantWeights>("/quant/weights");
+export const submitBacktest = (params: BacktestParams) => apiSend<{ job_id: string }>("/quant/backtest", "POST", params);
+export const getBacktestJob = (id: string) => apiGet<QuantJob<BacktestResult>>(`/quant/backtest/${id}`);
+export const submitFactorIc = (params: { factors?: string[]; fwd: number }) => apiSend<{ job_id: string }>("/quant/factor-ic", "POST", params);
+export const getFactorIcJob = (id: string) => apiGet<QuantJob<FactorIcResult>>(`/quant/factor-ic/${id}`);

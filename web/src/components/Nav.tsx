@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 
 const LINKS: [string, string][] = [
   ["/", "驾驶舱"], ["/assist/picks", "选票"], ["/assist/holdings", "我的持仓"], ["/assist/review", "复盘"],
+  ["/quant/backtest", "量化回测"], ["/quant/factors", "因子"],
 ];
 
 export default function Nav() {

@@ -8,3 +8,7 @@ dashboard.log
 .DS_Store
 web/node_modules/
 web/dist/
+web/*.tsbuildinfo
+web/vite.config.js
+web/vite.config.d.ts
+web/preview.log

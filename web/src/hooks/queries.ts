@@ -55,3 +55,33 @@ export const useDeleteTrade = () => {
   const invalidate = useInvalidateHoldings();
   return useMutation({ mutationFn: api.deleteTrade, onSuccess: invalidate });
 };
+
+const jobPoll = (q: { state: { data?: { status?: string } } }) => {
+  const s = q.state.data?.status;
+  return s === "done" || s === "error" ? false : 1500;
+};
+
+export const useQuantWeights = () =>
+  useQuery({ queryKey: ["quant-weights"], queryFn: api.getQuantWeights });
+
+export const useSubmitBacktest = () =>
+  useMutation({ mutationFn: api.submitBacktest });
+
+export const useBacktestJob = (jobId: string | null) =>
+  useQuery({
+    queryKey: ["backtest-job", jobId],
+    queryFn: () => api.getBacktestJob(jobId as string),
+    enabled: !!jobId,
+    refetchInterval: jobPoll as unknown as number | false,
+  });
+
+export const useSubmitFactorIc = () =>
+  useMutation({ mutationFn: api.submitFactorIc });
+
+export const useFactorIcJob = (jobId: string | null) =>
+  useQuery({
+    queryKey: ["factor-ic-job", jobId],
+    queryFn: () => api.getFactorIcJob(jobId as string),
+    enabled: !!jobId,
+    refetchInterval: jobPoll as unknown as number | false,
+  });
