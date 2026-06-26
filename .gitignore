@@ -12,3 +12,4 @@ web/*.tsbuildinfo
 web/vite.config.js
 web/vite.config.d.ts
 web/preview.log
+web/dev.log
