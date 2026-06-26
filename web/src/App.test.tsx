@@ -14,5 +14,7 @@ describe("App nav", () => {
     expect(screen.getByRole("link", { name: "选票" })).toBeInTheDocument();
     expect(screen.getByRole("link", { name: "我的持仓" })).toBeInTheDocument();
     expect(screen.getByRole("link", { name: "复盘" })).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "量化回测" })).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "因子" })).toBeInTheDocument();
   });
 });
