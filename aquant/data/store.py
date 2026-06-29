@@ -26,6 +26,7 @@ TABLE_KEYS: dict[str, list[str]] = {
     "picks_log": ["as_of", "code"],
     "quote_snapshot": ["code", "ts"],
     "sector_snapshot": ["sector", "ts"],
+    "sector_fund_flow": ["sector", "date"],
     "factor_score": ["code", "as_of"],
     "news_cache": ["code", "as_of"],
     "fund_context_cache": ["code", "as_of"],
