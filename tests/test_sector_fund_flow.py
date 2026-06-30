@@ -22,3 +22,13 @@ def test_refresh_sector_fund_flow_writes(seed_db):
     assert n == 1
     rows = seed_db.query("SELECT sector, main_net, date FROM sector_fund_flow")
     assert rows["sector"].iloc[0] == "医药生物" and rows["date"].notna().all()
+
+
+def test_refresh_fund_flow_writes(seed_db):
+    from server.refresh import fundflow
+    fake = pd.DataFrame({"code": ["600000"], "name": ["浦发"], "close": [10.0],
+                         "pct_chg": [1.2], "main_net": [1.5e8], "main_net_pct": [3.0]})
+    n = fundflow.refresh_fund_flow(fetch=lambda: fake)
+    assert n == 1
+    rows = seed_db.query("SELECT code, main_net, date FROM fund_flow")
+    assert rows["code"].iloc[0] == "600000" and rows["date"].notna().all()
