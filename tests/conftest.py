@@ -23,6 +23,10 @@ def _clean_trades():
 def seed_db():
     """向临时 DuckDB 写入最小行情数据：2 只股票、各 80 个交易日。"""
     from aquant.data import store
+    # 清空测试可能修改的表，确保测试隔离
+    with store.connect() as con:
+        con.execute("DROP TABLE IF EXISTS fund_flow")
+        con.execute("DROP TABLE IF EXISTS sector_fund_flow")
     dates = pd.bdate_range("2026-01-01", periods=80).strftime("%Y-%m-%d").tolist()
     rows = []
     for code, base in (("600000", 10.0), ("000001", 20.0)):

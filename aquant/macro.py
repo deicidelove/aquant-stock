@@ -55,3 +55,42 @@ def indices(codes: list[str] | None = None) -> list[dict]:
         if t:
             out.append(t)
     return out
+
+
+def sector_fund_rank(top: int = 20) -> dict:  # noqa: ARG001 预留前端切分用
+    if not store.has_table("sector_fund_flow"):
+        return {"as_of": None, "rows": []}
+    as_of = store.query("SELECT max(date) d FROM sector_fund_flow")["d"].iloc[0]
+    if as_of is None:
+        return {"as_of": None, "rows": []}
+    df = store.query("SELECT sector,pct_chg,main_net,main_net_pct,leader FROM sector_fund_flow "
+                     "WHERE date = ? ORDER BY main_net DESC", [as_of])
+    return {"as_of": str(as_of), "rows": df.to_dict(orient="records")}
+
+
+def abnormal_fund(scope: str = "stock", n: int = 20, z: float = 2.0, top: int = 20) -> dict:
+    table, key = ("fund_flow", "code") if scope == "stock" else ("sector_fund_flow", "sector")
+    if not store.has_table(table):
+        return {"scope": scope, "rows": []}
+    df = store.query(f"SELECT {key} k, date, main_net FROM {table} ORDER BY {key}, date")
+    if df.empty:
+        return {"scope": scope, "rows": []}
+    out = []
+    for k, g in df.groupby("k", sort=False):
+        vals = g["main_net"].astype(float).tolist()
+        if len(vals) < 3:
+            continue
+        latest = vals[-1]
+        hist = vals[max(0, len(vals) - 1 - n):-1]  # 除最新外近 n 个
+        if len(hist) < 2:
+            continue
+        s = pd.Series(hist)
+        mean, std = float(s.mean()), float(s.std(ddof=0))
+        if std <= 0:
+            continue
+        zz = (latest - mean) / std
+        if abs(zz) >= z:
+            out.append({"key": str(k), "latest": round(latest, 2), "mean": round(mean, 2),
+                        "std": round(std, 2), "z": round(zz, 2)})
+    out.sort(key=lambda x: abs(x["z"]), reverse=True)
+    return {"scope": scope, "rows": out[:top]}
