@@ -72,3 +72,29 @@ export function buildFactorIcBarOption(rows: { factor: string; ir: number }[]): 
     }],
   };
 }
+
+export function buildMarketFundOption(series: { date: string; net: number }[]): object {
+  return {
+    tooltip: { trigger: "axis" },
+    grid: { left: 50, right: 20, top: 10, bottom: 40 },
+    xAxis: { type: "category", data: series.map((p) => p.date) },
+    yAxis: { type: "value", name: "亿元" },
+    series: [{
+      type: "bar",
+      data: series.map((p) => ({ value: p.net, itemStyle: { color: p.net >= 0 ? "#ef4444" : "#22c55e" } })),
+    }],
+  };
+}
+
+export function buildSectorFundTreemapOption(rows: { sector: string; main_net: number }[]): object {
+  return {
+    tooltip: {},
+    series: [{
+      type: "treemap", roam: false, breadcrumb: { show: false },
+      data: rows.map((r) => ({
+        name: r.sector, value: Math.abs(r.main_net),
+        itemStyle: { color: r.main_net >= 0 ? "#ef4444" : "#22c55e" },
+      })),
+    }],
+  };
+}
