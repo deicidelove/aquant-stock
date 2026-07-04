@@ -288,6 +288,24 @@ def industry_members(sector: str) -> pd.DataFrame:
     return df[["sector", "code", "name"]].copy()
 
 
+_SECTOR_FLOW_MAP = {
+    "名称": "sector", "今日涨跌幅": "pct_chg", "今日主力净流入-净额": "main_net",
+    "今日主力净流入-净占比": "main_net_pct", "今日主力净流入最大股": "leader",
+}
+
+
+@_robust
+def sector_fund_flow() -> pd.DataFrame:
+    """行业板块资金流：各板块今日主力净额/净占比/领涨股。columns=[sector,pct_chg,main_net,main_net_pct,leader]。"""
+    df = ak.stock_sector_fund_flow_rank(indicator="今日", sector_type="行业资金流").rename(columns=_SECTOR_FLOW_MAP)
+    keep = [c for c in _SECTOR_FLOW_MAP.values() if c in df.columns]
+    out = df[keep].copy()
+    for c in ("pct_chg", "main_net", "main_net_pct"):
+        if c in out.columns:
+            out[c] = pd.to_numeric(out[c], errors="coerce")
+    return out
+
+
 # ---------------------------------------------------------------- 指数日线
 
 @_robust

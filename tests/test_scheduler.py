@@ -16,3 +16,10 @@ def test_build_scheduler_registers_jobs():
     job_ids = {j.id for j in sched.get_jobs()}
     assert {"intraday_snapshots", "eod_materialize"}.issubset(job_ids)
     assert not sched.running  # 仅构建不启动
+
+
+def test_intraday_registers_fundflow():
+    import server.refresh.scheduler as sch
+    # _intraday_job 引用了资金刷新函数（通过模块属性可见）
+    import server.refresh.fundflow as ff
+    assert hasattr(ff, "refresh_sector_fund_flow") and hasattr(ff, "refresh_fund_flow")

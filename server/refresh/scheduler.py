@@ -5,7 +5,7 @@ from datetime import datetime, time
 
 from apscheduler.schedulers.background import BackgroundScheduler
 
-from server.refresh import snapshots, scores
+from server.refresh import snapshots, scores, fundflow
 
 _AM = (time(9, 30), time(11, 30))
 _PM = (time(13, 0), time(15, 0))
@@ -21,7 +21,8 @@ def is_trading_hours(now: datetime) -> bool:
 def _intraday_job() -> None:
     if not is_trading_hours(datetime.now()):
         return
-    for fn in (snapshots.refresh_quotes, snapshots.refresh_sectors):
+    for fn in (snapshots.refresh_quotes, snapshots.refresh_sectors,
+               fundflow.refresh_sector_fund_flow, fundflow.refresh_fund_flow):
         try:
             fn()
         except Exception:  # noqa: BLE001 后台任务失败不影响其他
