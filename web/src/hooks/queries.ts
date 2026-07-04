@@ -85,3 +85,14 @@ export const useFactorIcJob = (jobId: string | null) =>
     enabled: !!jobId,
     refetchInterval: jobPoll as unknown as number | false,
   });
+
+export const useIndices = () =>
+  useQuery({ queryKey: ["m-indices"], queryFn: api.getIndices, refetchInterval: live });
+export const useSentiment = () =>
+  useQuery({ queryKey: ["m-sentiment"], queryFn: api.getSentimentMacro, refetchInterval: live });
+export const useMarketFund = (days = 10) =>
+  useQuery({ queryKey: ["m-marketfund", days], queryFn: () => api.getMarketFund(days), refetchInterval: live });
+export const useSectorFund = () =>
+  useQuery({ queryKey: ["m-sectorfund"], queryFn: api.getSectorFund, refetchInterval: live });
+export const useAbnormal = (scope = "stock", n = 20, z = 2) =>
+  useQuery({ queryKey: ["m-abnormal", scope, n, z], queryFn: () => api.getAbnormal(scope, n, z), refetchInterval: live });
