@@ -3,8 +3,10 @@ import { render, screen } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 vi.mock("./charts/EChart", () => ({ default: () => <div data-testid="echart" /> }));
 vi.mock("./hooks/queries", () => ({
-  useOverview: () => ({ isSuccess: false }), useSectors: () => ({ isSuccess: false }),
   usePicks: () => ({ isSuccess: false }), useTopScores: () => ({ isSuccess: false }),
+  useIndices: () => ({ isSuccess: false }), useSentiment: () => ({ isSuccess: false }),
+  useMarketFund: () => ({ isSuccess: false }), useSectorFund: () => ({ isSuccess: false }),
+  useAbnormal: () => ({ isSuccess: false }),
 }));
 import App from "./App";
 

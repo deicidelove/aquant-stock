@@ -3,19 +3,21 @@ import { render, screen } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 vi.mock("../charts/EChart", () => ({ default: () => <div data-testid="echart" /> }));
 vi.mock("../hooks/queries", () => ({
-  useOverview: () => ({ isSuccess: true, isError: false, data: { breadth: { up: 3000, down: 1000, limit_up: 10, up_ratio: 60, above_ma20_pct: 55, above_ma60_pct: 48, total: 5000 }, regime: { state: "进攻", score: 4 }, index: { code: "sh000300", close: 3900 } } }),
-  useSectors: () => ({ isSuccess: true, isError: false, data: { as_of: "2026-06-23", rows: [{ sector: "银行", pct_chg: 1.2, mkt_cap: 5e11 }], rotation: {} } }),
-  usePicks: () => ({ isSuccess: true, isError: false, data: { rows: [{ code: "600000", name: "浦发", score: 1.2 }] } }),
-  useTopScores: () => ({ isSuccess: true, isError: false, data: { as_of: "2026-06-23", rows: [{ code: "000001", name: "平安", score: 2.5 }] } }),
+  useIndices: () => ({ isSuccess: true, data: { rows: [{ code: "sh000300", close: 3900, ret_20d: 1 }] } }),
+  useSentiment: () => ({ isSuccess: true, data: { up: 3000, down: 1000, limit_up: 40, limit_down: 5, amount: 9e11, score: 62, label: "偏热" } }),
+  useMarketFund: () => ({ isSuccess: true, data: { today: 3.4, series: [{ date: "2026-06-23", net: 3.4 }] } }),
+  useSectorFund: () => ({ isSuccess: true, data: { as_of: "2026-06-23", rows: [{ sector: "医药", pct_chg: 2, main_net: 5e8, main_net_pct: 1, leader: "恒瑞" }] } }),
+  useAbnormal: () => ({ isSuccess: true, data: { scope: "stock", rows: [] } }),
 }));
 import Cockpit from "./Cockpit";
 
-describe("Cockpit", () => {
-  it("renders all four panels' key content", () => {
+describe("Cockpit macro", () => {
+  it("renders the five macro modules' titles", () => {
     render(<MemoryRouter><Cockpit /></MemoryRouter>);
-    expect(screen.getByText("进攻")).toBeInTheDocument();
-    expect(screen.getByText("每日建仓名单")).toBeInTheDocument();
-    expect(screen.getByText("综合分高分股")).toBeInTheDocument();
-    expect(screen.getByText("板块概览")).toBeInTheDocument();
+    expect(screen.getByText("大盘指数")).toBeInTheDocument();
+    expect(screen.getByText("市场情绪")).toBeInTheDocument();
+    expect(screen.getByText("大盘资金")).toBeInTheDocument();
+    expect(screen.getByText("板块资金")).toBeInTheDocument();
+    expect(screen.getByText(/异常资金/)).toBeInTheDocument();
   });
 });
