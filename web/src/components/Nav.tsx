@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 
-const PRIMARY: [string, string][] = [["/", "看板"], ["/assist/holdings", "我的持仓"]];
+const PRIMARY: [string, string][] = [["/", "看板"], ["/lhb", "龙虎榜"], ["/assist/holdings", "我的持仓"]];
 const ADVANCED: [string, string][] = [
   ["/macro", "驾驶舱"], ["/assist/picks", "选票"], ["/assist/review", "复盘"],
   ["/quant/backtest", "量化回测"], ["/quant/factors", "因子"],

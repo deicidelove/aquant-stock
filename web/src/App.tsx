@@ -3,6 +3,7 @@ import Nav from "./components/Nav";
 import Board from "./pages/Board";
 import Cockpit from "./pages/Cockpit";
 import StockDetail from "./pages/StockDetail";
+import Lhb from "./pages/Lhb";
 import AssistPicks from "./pages/AssistPicks";
 import AssistHoldings from "./pages/AssistHoldings";
 import AssistReview from "./pages/AssistReview";
@@ -16,6 +17,7 @@ export default function App() {
       <Routes>
         <Route path="/" element={<Board />} />
         <Route path="/macro" element={<Cockpit />} />
+        <Route path="/lhb" element={<Lhb />} />
         <Route path="/stock/:code" element={<StockDetail />} />
         <Route path="/assist/picks" element={<AssistPicks />} />
         <Route path="/assist/holdings" element={<AssistHoldings />} />
