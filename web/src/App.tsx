@@ -1,5 +1,6 @@
 import { Routes, Route } from "react-router-dom";
 import Nav from "./components/Nav";
+import Board from "./pages/Board";
 import Cockpit from "./pages/Cockpit";
 import StockDetail from "./pages/StockDetail";
 import AssistPicks from "./pages/AssistPicks";
@@ -13,7 +14,8 @@ export default function App() {
     <>
       <Nav />
       <Routes>
-        <Route path="/" element={<Cockpit />} />
+        <Route path="/" element={<Board />} />
+        <Route path="/macro" element={<Cockpit />} />
         <Route path="/stock/:code" element={<StockDetail />} />
         <Route path="/assist/picks" element={<AssistPicks />} />
         <Route path="/assist/holdings" element={<AssistHoldings />} />

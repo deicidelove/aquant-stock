@@ -4,7 +4,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import React from "react";
 
 const { addWatch } = vi.hoisted(() => ({
-  addWatch: vi.fn(async () => ({ codes: ["600000"] })),
+  addWatch: vi.fn(async (_code: string) => ({ codes: ["600000"] })),
 }));
 
 vi.mock("../api/client", () => ({
