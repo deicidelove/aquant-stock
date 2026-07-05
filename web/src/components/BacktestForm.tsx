@@ -24,7 +24,7 @@ export default function BacktestForm({ presets, onSubmit }: { presets: QuantWeig
   };
 
   return (
-    <form onSubmit={submit} className="rounded-lg border border-gray-200 p-4">
+    <form onSubmit={submit} className="rounded-lg border border-slate-700 p-4">
       <h2 className="text-lg font-bold">回测配置</h2>
       <div className="mt-2 grid grid-cols-2 gap-2 text-sm sm:grid-cols-4">
         <label className="flex flex-col">权重预设
@@ -38,7 +38,7 @@ export default function BacktestForm({ presets, onSubmit }: { presets: QuantWeig
         <label className="flex flex-col">最小历史<input aria-label="最小历史" type="number" value={minHistory} onChange={(e) => setMinHistory(e.target.value)} className="border p-1" /></label>
       </div>
       <div className="mt-3 text-sm">
-        <div className="text-gray-500">因子权重（可调）</div>
+        <div className="text-slate-400">因子权重（可调）</div>
         <div className="mt-1 grid grid-cols-2 gap-2 sm:grid-cols-3">
           {Object.keys(weights).map((f) => (
             <label key={f} className="flex items-center justify-between gap-1">
