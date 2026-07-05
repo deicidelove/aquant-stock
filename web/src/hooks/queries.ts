@@ -120,3 +120,10 @@ export const useRemoveWatch = () => {
   const invalidate = useInvalidateBoard();
   return useMutation({ mutationFn: api.removeWatch, onSuccess: invalidate });
 };
+
+export const useRegime = () =>
+  useQuery({ queryKey: ["regime"], queryFn: api.getRegime, refetchInterval: live });
+export const useIndexSeries = (code = "sh000300", n = 120) =>
+  useQuery({ queryKey: ["index-series", code, n], queryFn: () => api.getIndexSeries(code, n), refetchInterval: live });
+export const useAmountTrend = (days = 20) =>
+  useQuery({ queryKey: ["amount-trend", days], queryFn: () => api.getAmountTrend(days), refetchInterval: live });
