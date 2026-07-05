@@ -16,6 +16,8 @@ def _clean_trades():
     from aquant.data import store
     with store.connect() as con:
         con.execute("DROP TABLE IF EXISTS trades")
+        con.execute("DROP TABLE IF EXISTS lhb_detail")
+        con.execute("DROP TABLE IF EXISTS lhb_seat")
     yield
 
 

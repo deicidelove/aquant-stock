@@ -6,6 +6,20 @@
 
 ---
 
+## 2026-07-05 v3.3A 龙虎榜后端（游资/机构席位）
+
+**已完成**：
+- 域层 `aquant/lhb.py`：`classify_seat`（机构专用/股通→北向/知名游资词典 HOTMONEY/普通）、`lhb_today(limit)`（最近上榜日按净买额降序+标签）、`lhb_stock(code,date)`（买卖前五席位穿透）。只读 DuckDB，请求路径不发网络。
+- source `akshare_source.lhb_seats(code,date,flag)` 包 `stock_lhb_stock_detail_em`，@_robust。
+- store 新表键 `lhb_seat:[code,date,side,seat]`。
+- refresh `server/refresh/lhb.py:refresh_lhb(days)`：抓上榜列表+逐只买卖席位入库，挂 EOD job。真实数据 reason 可空→填 ""（reason 是主键）。
+- API `/api/lhb/today`、`/api/lhb/stock/{code}`（router+schemas，app 注册）。
+- 测试 +13（77 passed）。真实入库冒烟：东山精密净买11.3亿(机构+北向)、横店东磁命中佛山无影脚游资。
+
+**下一步**：v3.3B 前端（龙虎榜页 + 席位穿透 + 导航 + StockDetail 追加）。
+
+---
+
 ## 2026-07-05 17:05 — v3 自选股看板上线(产品转向散户日常看盘)
 **问题**：v2/v2.1被判失败产品(量化口径,散户看不懂)。调研后转向:以自选/持仓为中心的日常看盘。
 **已完成**：v3A后端(watchlist表+CRUD+board自选∪持仓卡片+/api/board)、board性能修复(43s→4.8s,复用物化评分)、v3B前端(看板设新首页/=Board:大盘条+加自选+卡片[信号/迷你走势/买点止损/提醒],宏观驾驶舱移/macro,量化/复盘收进导航'高级')。全合并推送 main 201fbd1,后端55+前端75测试绿,终审均Ready to merge。
