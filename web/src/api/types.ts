@@ -88,3 +88,8 @@ export interface AmountTrend { series: { date: string; amount: number }[] }
 
 export interface ChartBar { date: string; open: number; high: number; low: number; close: number; volume: number }
 export interface StockChart { code: string; bars: ChartBar[]; ma: Record<string, (number | null)[]>; macd: Record<string, (number | null)[]> }
+
+export interface LhbRow { code: string; name: string; pct_chg: number | null; lhb_net_buy: number | null; lhb_amount: number | null; reason: string; tags: string[] }
+export interface LhbToday { date: string | null; rows: LhbRow[] }
+export interface LhbSeat { rank: number; seat: string; buy: number | null; sell: number | null; net: number | null; seat_type: string; hotmoney_name: string | null }
+export interface LhbStock { code: string; name: string | null; date: string | null; reason: string | null; buy: LhbSeat[]; sell: LhbSeat[] }
