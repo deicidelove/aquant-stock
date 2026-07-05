@@ -48,3 +48,12 @@ def index_series(code: str = "sh000300", n: int = 120) -> IndexSeriesResp:
 @router.get("/amount-trend", response_model=AmountTrendResp)
 def amount_trend(days: int = 20) -> AmountTrendResp:
     return AmountTrendResp(**macro.amount_trend(days=days))
+
+
+from aquant import sentiment as _sentiment
+from server.schemas.macro import NewsSentimentResp
+
+
+@router.get("/news-sentiment", response_model=NewsSentimentResp)
+def news_sentiment(limit: int = 30) -> NewsSentimentResp:
+    return NewsSentimentResp(**_sentiment.market_news_sentiment(limit=limit))

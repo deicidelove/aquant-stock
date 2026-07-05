@@ -46,3 +46,12 @@ class IndexSeriesResp(BaseModel):
 
 class AmountTrendResp(BaseModel):
     series: list[dict]
+
+
+class NewsSentimentResp(BaseModel):
+    score: int
+    label: str
+    pos: int
+    neg: int
+    neutral: int
+    items: list[dict]
