@@ -28,3 +28,21 @@ class SectorFundResp(BaseModel):
 class AbnormalResp(BaseModel):
     scope: str
     rows: list[dict]
+
+
+class RegimeResp(BaseModel):
+    state: str
+    score: float | int
+    suggested_position: str | None = None
+    note: str | None = None
+    breadth: dict | None = None
+    index: dict | None = None
+
+
+class IndexSeriesResp(BaseModel):
+    code: str
+    points: list[dict]
+
+
+class AmountTrendResp(BaseModel):
+    series: list[dict]

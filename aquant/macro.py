@@ -94,3 +94,35 @@ def abnormal_fund(scope: str = "stock", n: int = 20, z: float = 2.0, top: int = 
                         "std": round(std, 2), "z": round(zz, 2)})
     out.sort(key=lambda x: abs(x["z"]), reverse=True)
     return {"scope": scope, "rows": out[:top]}
+
+
+def regime() -> dict:
+    return market.regime()
+
+
+def index_series(code: str = "sh000300", n: int = 120) -> dict:
+    if not store.has_table("index_daily"):
+        return {"code": code, "points": []}
+    df = store.query("SELECT date, close FROM index_daily WHERE code = ? ORDER BY date", [code])
+    if df.empty:
+        return {"code": code, "points": []}
+    df["ma20"] = df["close"].rolling(20).mean()
+    df["ma60"] = df["close"].rolling(60).mean()
+    tail = df.tail(n)
+    points = [{"date": str(r["date"]), "close": round(float(r["close"]), 2),
+               "ma20": round(float(r["ma20"]), 2) if pd.notna(r["ma20"]) else None,
+               "ma60": round(float(r["ma60"]), 2) if pd.notna(r["ma60"]) else None}
+              for _, r in tail.iterrows()]
+    return {"code": code, "points": points}
+
+
+def amount_trend(days: int = 20) -> dict:
+    if not store.has_table("daily_bar"):
+        return {"series": []}
+    df = store.query("SELECT date, sum(amount) amt FROM daily_bar GROUP BY date ORDER BY date")
+    if df.empty:
+        return {"series": []}
+    tail = df.tail(days)
+    series = [{"date": str(r["date"]), "amount": round(float(r["amt"]) / 1e8, 2)}
+              for _, r in tail.iterrows()]
+    return {"series": series}

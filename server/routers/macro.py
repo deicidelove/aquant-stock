@@ -29,3 +29,22 @@ def sector_fund() -> SectorFundResp:
 @router.get("/abnormal", response_model=AbnormalResp)
 def abnormal(scope: str = "stock", n: int = 20, z: float = 2.0) -> AbnormalResp:
     return AbnormalResp(**macro.abnormal_fund(scope=scope, n=n, z=z))
+
+
+from server.schemas.macro import RegimeResp, IndexSeriesResp, AmountTrendResp
+
+
+@router.get("/regime", response_model=RegimeResp)
+def regime() -> RegimeResp:
+    d = macro.regime()
+    return RegimeResp(**d) if d else RegimeResp(state="", score=0)
+
+
+@router.get("/index-series", response_model=IndexSeriesResp)
+def index_series(code: str = "sh000300", n: int = 120) -> IndexSeriesResp:
+    return IndexSeriesResp(**macro.index_series(code=code, n=n))
+
+
+@router.get("/amount-trend", response_model=AmountTrendResp)
+def amount_trend(days: int = 20) -> AmountTrendResp:
+    return AmountTrendResp(**macro.amount_trend(days=days))
