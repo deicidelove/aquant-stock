@@ -39,6 +39,11 @@ def _eod_job() -> None:
         prefetch_research()
     except Exception:  # noqa: BLE001
         pass
+    try:
+        from server.refresh.lhb import refresh_lhb
+        refresh_lhb()
+    except Exception:  # noqa: BLE001
+        pass
 
 
 def build_scheduler() -> BackgroundScheduler:

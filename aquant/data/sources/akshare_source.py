@@ -351,3 +351,19 @@ def lhb_detail(start: str, end: str) -> pd.DataFrame:
         df["date"] = pd.to_datetime(df["date"]).dt.strftime("%Y-%m-%d")
     keep = [c for c in dict.fromkeys(rename.values()) if c in df.columns]
     return df[keep].copy()
+
+
+@_robust
+def lhb_seats(code: str, date: str, flag: str) -> pd.DataFrame:
+    """个股龙虎榜席位明细。flag='买入'/'卖出'，date=YYYY-MM-DD 或 YYYYMMDD。"""
+    d = str(date).replace("-", "")
+    rename = {"序号": "rank", "交易营业部名称": "seat", "买入金额": "buy",
+              "卖出金额": "sell", "净额": "net"}
+    df = ak.stock_lhb_stock_detail_em(
+        symbol=str(code).zfill(6), date=d, flag=flag).rename(columns=rename)
+    keep = [c for c in ("rank", "seat", "buy", "sell", "net") if c in df.columns]
+    out = df[keep].copy()
+    for col in ("buy", "sell", "net"):
+        if col in out.columns:
+            out[col] = pd.to_numeric(out[col], errors="coerce")
+    return out

@@ -21,6 +21,7 @@ TABLE_KEYS: dict[str, list[str]] = {
     "sector_daily": ["sector", "date"],
     "sector_member": ["sector", "code"],
     "lhb_detail": ["code", "date", "reason"],
+    "lhb_seat": ["code", "date", "side", "seat"],
     "index_daily": ["code", "date"],
     "fundamental": ["code", "date"],
     "picks_log": ["as_of", "code"],
