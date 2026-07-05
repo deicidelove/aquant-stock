@@ -7,9 +7,9 @@ const LINKS: [string, string][] = [
 
 export default function Nav() {
   return (
-    <nav className="flex gap-4 border-b border-gray-200 bg-gray-50 px-4 py-2 text-sm">
+    <nav className="flex gap-4 border-b border-slate-700 bg-slate-800 px-4 py-2 text-sm">
       {LINKS.map(([to, label]) => (
-        <Link key={to} to={to} className="text-blue-700 hover:underline">{label}</Link>
+        <Link key={to} to={to} className="text-sky-400 hover:underline">{label}</Link>
       ))}
     </nav>
   );

@@ -2,13 +2,13 @@ import type { Holding } from "../api/types";
 
 export default function HoldingsPanel({ rows, onPick }: { rows: Holding[]; onPick?: (code: string) => void }) {
   return (
-    <section className="rounded-lg border border-gray-200 p-4">
+    <section className="rounded-lg border border-slate-700 p-4">
       <h2 className="text-lg font-bold">我的持仓</h2>
       {rows.length === 0 ? (
-        <p className="mt-2 text-sm text-gray-400">暂无持仓，去“选票”建仓或在下方录入交易。</p>
+        <p className="mt-2 text-sm text-slate-500">暂无持仓，去“选票”建仓或在下方录入交易。</p>
       ) : (
         <table className="mt-2 w-full text-sm">
-          <thead className="text-gray-500">
+          <thead className="text-slate-400">
             <tr>
               <th className="text-left">代码</th><th className="text-left">名称</th>
               <th className="text-right">持股</th><th className="text-right">成本</th>
@@ -18,7 +18,7 @@ export default function HoldingsPanel({ rows, onPick }: { rows: Holding[]; onPic
           </thead>
           <tbody>
             {rows.map((r) => (
-              <tr key={r.code} className="cursor-pointer hover:bg-gray-50" onClick={() => onPick?.(r.code)}>
+              <tr key={r.code} className="cursor-pointer hover:bg-slate-800" onClick={() => onPick?.(r.code)}>
                 <td>{r.code}</td><td>{r.name}</td>
                 <td className="text-right">{r.shares}</td><td className="text-right">{r.avg_cost}</td>
                 <td className="text-right">{r.last_price ?? "—"}</td>

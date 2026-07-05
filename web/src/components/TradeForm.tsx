@@ -14,7 +14,7 @@ export default function TradeForm({ onSubmit }: { onSubmit: (t: TradeInput) => v
   };
 
   return (
-    <form onSubmit={submit} className="rounded-lg border border-gray-200 p-4">
+    <form onSubmit={submit} className="rounded-lg border border-slate-700 p-4">
       <h2 className="text-lg font-bold">录入交易</h2>
       <div className="mt-2 grid grid-cols-2 gap-2 text-sm sm:grid-cols-5">
         <label className="flex flex-col">日期<input aria-label="日期" type="date" value={date} onChange={(e) => setDate(e.target.value)} className="border p-1" /></label>

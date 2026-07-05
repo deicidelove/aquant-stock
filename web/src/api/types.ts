@@ -61,3 +61,12 @@ export interface FactorIcRow { factor: string; ic_mean: number; ic_std: number; 
 export interface FactorIcResult { rows: FactorIcRow[]; fwd: number }
 
 export interface QuantJob<T> { job_id: string; kind: string; status: string; result: T | null; error: string | null }
+
+export interface IndexRow { code: string; close: number; above_ma20?: boolean; above_ma60?: boolean; ret_20d?: number | null; ret_60d?: number | null }
+export interface IndicesResp { rows: IndexRow[] }
+export interface Sentiment { up: number; down: number; limit_up: number; limit_down: number; amount: number; score: number; label: string }
+export interface MarketFund { today: number; series: { date: string; net: number }[] }
+export interface SectorFundRow { sector: string; pct_chg: number; main_net: number; main_net_pct: number; leader: string }
+export interface SectorFund { as_of: string | null; rows: SectorFundRow[] }
+export interface AbnormalRow { key: string; latest: number; mean: number; std: number; z: number }
+export interface Abnormal { scope: string; rows: AbnormalRow[] }

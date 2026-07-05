@@ -2,6 +2,7 @@ import type {
   Overview, Sectors, TopScores, Picks, Kline, Report,
   HoldingsResp, TradesResp, Pnl, TradeInput, BriefingResp, ScorecardResp,
   QuantWeights, BacktestParams, BacktestResult, FactorIcResult, QuantJob,
+  IndicesResp, Sentiment, MarketFund, SectorFund, Abnormal,
 } from "./types";
 
 async function apiGet<T>(path: string): Promise<T> {
@@ -40,3 +41,9 @@ export const submitBacktest = (params: BacktestParams) => apiSend<{ job_id: stri
 export const getBacktestJob = (id: string) => apiGet<QuantJob<BacktestResult>>(`/quant/backtest/${id}`);
 export const submitFactorIc = (params: { factors?: string[]; fwd: number }) => apiSend<{ job_id: string }>("/quant/factor-ic", "POST", params);
 export const getFactorIcJob = (id: string) => apiGet<QuantJob<FactorIcResult>>(`/quant/factor-ic/${id}`);
+
+export const getIndices = () => apiGet<IndicesResp>("/cockpit/indices");
+export const getSentimentMacro = () => apiGet<Sentiment>("/cockpit/sentiment");
+export const getMarketFund = (days = 10) => apiGet<MarketFund>(`/cockpit/market-fund?days=${days}`);
+export const getSectorFund = () => apiGet<SectorFund>("/cockpit/sector-fund");
+export const getAbnormal = (scope = "stock", n = 20, z = 2) => apiGet<Abnormal>(`/cockpit/abnormal?scope=${scope}&n=${n}&z=${z}`);

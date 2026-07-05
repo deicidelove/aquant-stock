@@ -1,25 +1,31 @@
-import { useNavigate } from "react-router-dom";
-import { useOverview, useSectors, usePicks, useTopScores } from "../hooks/queries";
-import OverviewPanel from "../components/OverviewPanel";
-import SectorPanel from "../components/SectorPanel";
-import PicksPanel from "../components/PicksPanel";
-import TopScoresPanel from "../components/TopScoresPanel";
+import { useIndices, useSentiment, useMarketFund, useSectorFund, useAbnormal } from "../hooks/queries";
+import { isTradingHours } from "../lib/tradingHours";
+import { UpdatedAt } from "../ui/atoms";
+import IndicesPanel from "../components/macro/IndicesPanel";
+import SentimentPanel from "../components/macro/SentimentPanel";
+import MarketFundPanel from "../components/macro/MarketFundPanel";
+import SectorFundPanel from "../components/macro/SectorFundPanel";
+import AbnormalPanel from "../components/macro/AbnormalPanel";
 
 export default function Cockpit() {
-  const nav = useNavigate();
-  const overview = useOverview();
-  const sectors = useSectors();
-  const picks = usePicks();
-  const top = useTopScores();
-  const goPick = (code: string) => nav(`/stock/${code}`);
+  const indices = useIndices();
+  const sentiment = useSentiment();
+  const marketFund = useMarketFund();
+  const sectorFund = useSectorFund();
+  const abnormal = useAbnormal("stock");
+  const now = new Date();
   return (
     <div className="space-y-4 p-4">
-      <h1 className="text-2xl font-bold">🛰 驾驶舱</h1>
+      <div className="flex items-baseline justify-between">
+        <h1 className="text-2xl font-bold text-slate-100">🛰 驾驶舱</h1>
+        <UpdatedAt at={now.toLocaleTimeString("zh-CN")} live={isTradingHours(now)} />
+      </div>
+      {indices.isSuccess && <IndicesPanel rows={indices.data.rows} />}
       <div className="grid gap-4 lg:grid-cols-2">
-        {overview.isSuccess && <OverviewPanel data={overview.data} />}
-        {sectors.isSuccess && <SectorPanel data={sectors.data} />}
-        {picks.isSuccess && <PicksPanel data={picks.data} onPick={goPick} />}
-        {top.isSuccess && <TopScoresPanel data={top.data} onPick={goPick} />}
+        {sentiment.isSuccess && <SentimentPanel data={sentiment.data} />}
+        {marketFund.isSuccess && <MarketFundPanel data={marketFund.data} />}
+        {sectorFund.isSuccess && <SectorFundPanel data={sectorFund.data} />}
+        {abnormal.isSuccess && <AbnormalPanel data={abnormal.data} />}
       </div>
     </div>
   );
