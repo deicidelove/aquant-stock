@@ -127,3 +127,6 @@ export const useIndexSeries = (code = "sh000300", n = 120) =>
   useQuery({ queryKey: ["index-series", code, n], queryFn: () => api.getIndexSeries(code, n), refetchInterval: live });
 export const useAmountTrend = (days = 20) =>
   useQuery({ queryKey: ["amount-trend", days], queryFn: () => api.getAmountTrend(days), refetchInterval: live });
+
+export const useStockChart = (code: string, n = 250) =>
+  useQuery({ queryKey: ["stock-chart", code, n], queryFn: () => api.getStockChart(code, n), enabled: !!code });

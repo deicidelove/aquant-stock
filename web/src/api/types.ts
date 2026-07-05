@@ -85,3 +85,6 @@ export interface Regime { state: string; score: number; suggested_position?: str
 export interface IndexPoint { date: string; close: number; ma20: number | null; ma60: number | null }
 export interface IndexSeries { code: string; points: IndexPoint[] }
 export interface AmountTrend { series: { date: string; amount: number }[] }
+
+export interface ChartBar { date: string; open: number; high: number; low: number; close: number; volume: number }
+export interface StockChart { code: string; bars: ChartBar[]; ma: Record<string, (number | null)[]>; macd: Record<string, (number | null)[]> }
