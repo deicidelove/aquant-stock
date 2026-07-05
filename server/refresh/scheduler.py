@@ -21,8 +21,10 @@ def is_trading_hours(now: datetime) -> bool:
 def _intraday_job() -> None:
     if not is_trading_hours(datetime.now()):
         return
+    from server.refresh.news import refresh_market_news
     for fn in (snapshots.refresh_quotes, snapshots.refresh_sectors,
-               fundflow.refresh_sector_fund_flow, fundflow.refresh_fund_flow):
+               fundflow.refresh_sector_fund_flow, fundflow.refresh_fund_flow,
+               refresh_market_news):
         try:
             fn()
         except Exception:  # noqa: BLE001 后台任务失败不影响其他
