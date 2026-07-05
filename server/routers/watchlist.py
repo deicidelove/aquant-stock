@@ -1,7 +1,7 @@
 from fastapi import APIRouter
 
 from aquant.portfolio import watchlist
-from server.schemas.watchlist import CodeIn, Codes
+from server.schemas.watchlist import CodeIn, Codes, BoardResp
 
 router = APIRouter(prefix="/api/watchlist", tags=["watchlist"])
 
@@ -21,3 +21,11 @@ def add_watchlist(body: CodeIn) -> Codes:
 def remove_watchlist(code: str) -> Codes:
     watchlist.remove(code)
     return Codes(codes=watchlist.list_codes())
+
+
+board_router = APIRouter(prefix="/api", tags=["board"])
+
+
+@board_router.get("/board", response_model=BoardResp)
+def get_board() -> BoardResp:
+    return BoardResp(rows=watchlist.board())

@@ -28,4 +28,5 @@ def create_app(start_scheduler: bool = True) -> FastAPI:
     app.include_router(quant.router)
     app.include_router(macro.router)
     app.include_router(watchlist.router)
+    app.include_router(watchlist.board_router)
     return app

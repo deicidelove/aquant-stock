@@ -7,3 +7,7 @@ class CodeIn(BaseModel):
 
 class Codes(BaseModel):
     codes: list[str]
+
+
+class BoardResp(BaseModel):
+    rows: list[dict]

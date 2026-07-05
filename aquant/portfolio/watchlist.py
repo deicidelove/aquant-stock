@@ -6,6 +6,8 @@ from datetime import datetime
 import pandas as pd
 
 from ..data import store
+from .. import research
+from . import holdings
 
 
 def add(code: str) -> None:
@@ -35,3 +37,27 @@ def list_codes() -> list[str]:
         return []
     df = store.query("SELECT code FROM watchlist ORDER BY added_ts")
     return [str(c) for c in df["code"].tolist()]
+
+
+def board(kline_n: int = 30) -> list[dict]:
+    held = {c for c, p in holdings._positions().items() if p["shares"] > 1e-9}
+    codes = list(dict.fromkeys(list_codes() + sorted(held)))  # 自选在前，持仓补齐，去重
+    out = []
+    for code in codes:
+        df = store.load_daily(code)
+        if df.empty:
+            continue
+        last_row = df.iloc[-1]
+        last_price = holdings._latest_price(code)
+        pct_chg = float(last_row["pct_chg"]) if "pct_chg" in df.columns and pd.notna(last_row["pct_chg"]) else None
+        kline = [{"date": str(r["date"]), "close": float(r["close"])}
+                 for _, r in df.tail(kline_n).iterrows()]
+        dec = research.decision(code, offline=True) or {}
+        out.append({
+            "code": code, "name": holdings._name_of(code),
+            "last_price": last_price, "pct_chg": pct_chg, "kline": kline,
+            "signal": dec.get("signal", ""), "one_liner": dec.get("one_liner", ""),
+            "battle_plan": dec.get("battle_plan", {}), "risk_level": dec.get("risk_level", ""),
+            "alerts": holdings.sell_alerts(code, last_price, dec=dec or None),
+        })
+    return out
