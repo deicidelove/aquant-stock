@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useBoard, useAddWatch, useRemoveWatch, useSentiment } from "../hooks/queries";
 import BoardCard from "../components/BoardCard";
+import NewsSentiment from "../components/NewsSentiment";
 
 export default function Board() {
   const nav = useNavigate();
@@ -42,6 +43,7 @@ export default function Board() {
           ))}
         </div>
       )}
+      <NewsSentiment compact />
     </div>
   );
 }

@@ -135,3 +135,6 @@ export const useLhbToday = (limit = 50) =>
   useQuery({ queryKey: ["lhb-today", limit], queryFn: () => api.getLhbToday(limit) });
 export const useLhbStock = (code: string) =>
   useQuery({ queryKey: ["lhb-stock", code], queryFn: () => api.getLhbStock(code), enabled: !!code });
+
+export const useNewsSentiment = (limit = 30) =>
+  useQuery({ queryKey: ["news-sentiment", limit], queryFn: () => api.getNewsSentiment(limit), refetchInterval: live });
