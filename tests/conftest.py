@@ -27,6 +27,7 @@ def seed_db():
     with store.connect() as con:
         con.execute("DROP TABLE IF EXISTS fund_flow")
         con.execute("DROP TABLE IF EXISTS sector_fund_flow")
+        con.execute("DROP TABLE IF EXISTS watchlist")
     dates = pd.bdate_range("2026-01-01", periods=80).strftime("%Y-%m-%d").tolist()
     rows = []
     for code, base in (("600000", 10.0), ("000001", 20.0)):
