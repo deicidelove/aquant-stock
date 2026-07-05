@@ -3,6 +3,7 @@ import type {
   HoldingsResp, TradesResp, Pnl, TradeInput, BriefingResp, ScorecardResp,
   QuantWeights, BacktestParams, BacktestResult, FactorIcResult, QuantJob,
   IndicesResp, Sentiment, MarketFund, SectorFund, Abnormal,
+  BoardResp, WatchlistResp,
 } from "./types";
 
 async function apiGet<T>(path: string): Promise<T> {
@@ -47,3 +48,8 @@ export const getSentimentMacro = () => apiGet<Sentiment>("/cockpit/sentiment");
 export const getMarketFund = (days = 10) => apiGet<MarketFund>(`/cockpit/market-fund?days=${days}`);
 export const getSectorFund = () => apiGet<SectorFund>("/cockpit/sector-fund");
 export const getAbnormal = (scope = "stock", n = 20, z = 2) => apiGet<Abnormal>(`/cockpit/abnormal?scope=${scope}&n=${n}&z=${z}`);
+
+export const getBoard = () => apiGet<BoardResp>("/board");
+export const getWatchlist = () => apiGet<WatchlistResp>("/watchlist");
+export const addWatch = (code: string) => apiSend<WatchlistResp>("/watchlist", "POST", { code });
+export const removeWatch = (code: string) => apiSend<WatchlistResp>(`/watchlist/${code}`, "DELETE");

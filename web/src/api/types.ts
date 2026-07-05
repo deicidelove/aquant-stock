@@ -70,3 +70,13 @@ export interface SectorFundRow { sector: string; pct_chg: number; main_net: numb
 export interface SectorFund { as_of: string | null; rows: SectorFundRow[] }
 export interface AbnormalRow { key: string; latest: number; mean: number; std: number; z: number }
 export interface Abnormal { scope: string; rows: AbnormalRow[] }
+
+export interface BoardCard {
+  code: string; name: string; last_price: number | null; pct_chg: number | null;
+  kline: { date: string; close: number }[];
+  signal: string; one_liner: string;
+  battle_plan: { ideal_buy?: number; secondary_buy?: number; stop_loss?: number; take_profit?: number; position?: string };
+  risk_level: string; alerts: string[];
+}
+export interface BoardResp { rows: BoardCard[] }
+export interface WatchlistResp { codes: string[] }
