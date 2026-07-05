@@ -98,3 +98,14 @@ export function buildSectorFundTreemapOption(rows: { sector: string; main_net: n
     }],
   };
 }
+
+export function buildSparklineOption(kline: { date: string; close: number }[]): object {
+  const closes = kline.map((k) => k.close);
+  const up = closes.length > 1 ? closes[closes.length - 1] >= closes[0] : true;
+  return {
+    grid: { left: 0, right: 0, top: 4, bottom: 4 },
+    xAxis: { type: "category", show: false, data: kline.map((k) => k.date) },
+    yAxis: { type: "value", show: false, scale: true },
+    series: [{ type: "line", showSymbol: false, data: closes, lineStyle: { color: up ? "#ef4444" : "#22c55e", width: 1.5 }, areaStyle: { opacity: 0.08, color: up ? "#ef4444" : "#22c55e" } }],
+  };
+}
