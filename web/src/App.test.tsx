@@ -6,6 +6,7 @@ vi.mock("./hooks/queries", () => ({
   useBoard: () => ({ isSuccess: false }), useWatchlist: () => ({ isSuccess: false }),
   useAddWatch: () => ({ mutate: vi.fn() }), useRemoveWatch: () => ({ mutate: vi.fn() }),
   useSentiment: () => ({ isSuccess: false }),
+  useNewsSentiment: () => ({ isSuccess: false }),
 }));
 import App from "./App";
 

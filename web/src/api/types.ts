@@ -93,3 +93,6 @@ export interface LhbRow { code: string; name: string; pct_chg: number | null; lh
 export interface LhbToday { date: string | null; rows: LhbRow[] }
 export interface LhbSeat { rank: number; seat: string; buy: number | null; sell: number | null; net: number | null; seat_type: string; hotmoney_name: string | null }
 export interface LhbStock { code: string; name: string | null; date: string | null; reason: string | null; buy: LhbSeat[]; sell: LhbSeat[] }
+
+export interface NewsItem { time: string; title: string; summary: string; url: string; sent: number }
+export interface NewsSentiment { score: number; label: string; pos: number; neg: number; neutral: number; items: NewsItem[] }

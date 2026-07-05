@@ -8,6 +8,7 @@ import SentimentPanel from "../components/macro/SentimentPanel";
 import MarketFundPanel from "../components/macro/MarketFundPanel";
 import SectorFundPanel from "../components/macro/SectorFundPanel";
 import AbnormalPanel from "../components/macro/AbnormalPanel";
+import NewsSentiment from "../components/NewsSentiment";
 
 export default function Cockpit() {
   const regime = useRegime();
@@ -33,6 +34,7 @@ export default function Cockpit() {
         {sectorFund.isSuccess && <SectorFundPanel data={sectorFund.data} />}
         {abnormal.isSuccess && <AbnormalPanel data={abnormal.data} />}
       </div>
+      <NewsSentiment limit={30} />
     </div>
   );
 }

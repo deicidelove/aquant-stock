@@ -10,6 +10,7 @@ vi.mock("../hooks/queries", () => ({
   useMarketFund: () => ({ isSuccess: true, data: { today: -434, series: [{ date: "d", net: -434 }] } }),
   useSectorFund: () => ({ isSuccess: true, data: { as_of: "d", rows: [{ sector: "医药", pct_chg: 2, main_net: 5e8, main_net_pct: 1, leader: "恒瑞" }] } }),
   useAbnormal: () => ({ isSuccess: true, data: { scope: "stock", rows: [] } }),
+  useNewsSentiment: () => ({ isSuccess: true, data: { score: 50, label: "中性", pos: 0, neg: 0, neutral: 0, items: [] } }),
 }));
 import Cockpit from "./Cockpit";
 

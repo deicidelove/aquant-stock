@@ -9,6 +9,7 @@ vi.mock("../hooks/queries", () => ({
   useAddWatch: () => ({ mutate: addMutate }),
   useRemoveWatch: () => ({ mutate: vi.fn() }),
   useSentiment: () => ({ isSuccess: true, data: { up: 1715, down: 1618, limit_up: 40, limit_down: 5, amount: 9e11, score: 37, label: "偏冷" } }),
+  useNewsSentiment: () => ({ isSuccess: true, data: { score: 50, label: "中性", pos: 0, neg: 0, neutral: 0, items: [] } }),
 }));
 import Board from "./Board";
 

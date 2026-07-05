@@ -6,6 +6,19 @@
 
 ---
 
+## 2026-07-05 v3.4 市场消息面 / 新闻情绪（资深股民三块最后一块）
+
+**已完成**：
+- 后端 `aquant/sentiment.py`：关键词法 `score_text`(利好+1/利空-1/中性0，宏观+个股词典)、`aggregate`(0-100 情绪指数+分档标签)、`market_news_sentiment`(读 market_news 表聚合，只读)。
+- source `news.market_news` 包 `stock_info_global_em`(全球财经快讯 标题/摘要/时间/链接)；store `market_news` 表键；`refresh_market_news` 抓+打分入库，挂盘中 job。
+- API `/api/cockpit/news-sentiment` + schema。
+- 前端 `NewsSentiment` 组件(情绪指数+利好/利空/中性计数+快讯列表，利好红/利空绿色点，紧凑/完整两态)；看板底部紧凑版、驾驶舱完整版。
+- 后端+8(85)、前端+12(98)全绿+build+e2e。真实冒烟：50 条快讯打分入库。
+
+**资深股民三块(K线专业化 / 龙虎榜 / 消息面)全部完成。**
+
+---
+
 ## 2026-07-05 v3.3A 龙虎榜后端（游资/机构席位）
 
 **已完成**：

@@ -4,7 +4,7 @@ import type {
   QuantWeights, BacktestParams, BacktestResult, FactorIcResult, QuantJob,
   IndicesResp, Sentiment, MarketFund, SectorFund, Abnormal,
   Regime, IndexSeries, AmountTrend, StockChart,
-  BoardResp, WatchlistResp, LhbToday, LhbStock,
+  BoardResp, WatchlistResp, LhbToday, LhbStock, NewsSentiment,
 } from "./types";
 
 async function apiGet<T>(path: string): Promise<T> {
@@ -63,3 +63,5 @@ export const getStockChart = (code: string, n = 250) => apiGet<StockChart>(`/sto
 
 export const getLhbToday = (limit = 50) => apiGet<LhbToday>(`/lhb/today?limit=${limit}`);
 export const getLhbStock = (code: string) => apiGet<LhbStock>(`/lhb/stock/${code}`);
+
+export const getNewsSentiment = (limit = 30) => apiGet<NewsSentiment>(`/cockpit/news-sentiment?limit=${limit}`);
