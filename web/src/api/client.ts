@@ -3,6 +3,7 @@ import type {
   HoldingsResp, TradesResp, Pnl, TradeInput, BriefingResp, ScorecardResp,
   QuantWeights, BacktestParams, BacktestResult, FactorIcResult, QuantJob,
   IndicesResp, Sentiment, MarketFund, SectorFund, Abnormal,
+  Regime, IndexSeries, AmountTrend,
   BoardResp, WatchlistResp,
 } from "./types";
 
@@ -53,3 +54,7 @@ export const getBoard = () => apiGet<BoardResp>("/board");
 export const getWatchlist = () => apiGet<WatchlistResp>("/watchlist");
 export const addWatch = (code: string) => apiSend<WatchlistResp>("/watchlist", "POST", { code });
 export const removeWatch = (code: string) => apiSend<WatchlistResp>(`/watchlist/${code}`, "DELETE");
+
+export const getRegime = () => apiGet<Regime>("/cockpit/regime");
+export const getIndexSeries = (code = "sh000300", n = 120) => apiGet<IndexSeries>(`/cockpit/index-series?code=${code}&n=${n}`);
+export const getAmountTrend = (days = 20) => apiGet<AmountTrend>(`/cockpit/amount-trend?days=${days}`);

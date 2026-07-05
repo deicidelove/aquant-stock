@@ -80,3 +80,8 @@ export interface BoardCard {
 }
 export interface BoardResp { rows: BoardCard[] }
 export interface WatchlistResp { codes: string[] }
+
+export interface Regime { state: string; score: number; suggested_position?: string; note?: string; breadth?: Record<string, number>; index?: Record<string, unknown> }
+export interface IndexPoint { date: string; close: number; ma20: number | null; ma60: number | null }
+export interface IndexSeries { code: string; points: IndexPoint[] }
+export interface AmountTrend { series: { date: string; amount: number }[] }
