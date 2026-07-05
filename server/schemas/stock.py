@@ -9,3 +9,10 @@ class KlineResp(BaseModel):
 class ReportResp(BaseModel):
     code: str
     decision: dict
+
+
+class ChartResp(BaseModel):
+    code: str
+    bars: list[dict]
+    ma: dict
+    macd: dict

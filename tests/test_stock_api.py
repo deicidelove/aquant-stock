@@ -19,3 +19,13 @@ def test_report_offline(client, seed_db, monkeypatch):
     assert r.status_code == 200
     assert r.json()["code"] == "600000"
     assert r.json()["decision"]
+
+
+def test_chart_endpoint(client, seed_db):
+    r = client.get("/api/stock/600000/chart?n=20")
+    assert r.status_code == 200
+    body = r.json()
+    assert body["code"] == "600000"
+    assert len(body["bars"]) == 20
+    assert set(["ma5", "ma10", "ma20", "ma60"]).issubset(body["ma"])
+    assert set(["dif", "dea", "hist"]).issubset(body["macd"])
