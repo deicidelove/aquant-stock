@@ -39,9 +39,22 @@ def list_codes() -> list[str]:
     return [str(c) for c in df["code"].tolist()]
 
 
+def _market_scores():
+    """全市场综合分（供个股排名/百分位）。优先读物化 factor_score（查表 ms 级），
+    否则退回现算一次。**只算一次**，避免看板逐只重扫全市场（曾致 3 只票 43s）。"""
+    if store.has_table("factor_score"):
+        df = store.query("SELECT code, score FROM factor_score "
+                         "WHERE as_of = (SELECT max(as_of) FROM factor_score)")
+        if not df.empty:
+            return df
+    from ..select import scorer
+    return scorer.score_fast(codes=research.universe(), top=10000)
+
+
 def board(kline_n: int = 30) -> list[dict]:
     held = {c for c, p in holdings._positions().items() if p["shares"] > 1e-9}
     codes = list(dict.fromkeys(list_codes() + sorted(held)))  # 自选在前，持仓补齐，去重
+    ms = _market_scores()  # 只算一次，传给每只 stock_report，避免逐只重扫全市场
     out = []
     for code in codes:
         df = store.load_daily(code)
@@ -52,7 +65,8 @@ def board(kline_n: int = 30) -> list[dict]:
         pct_chg = float(last_row["pct_chg"]) if "pct_chg" in df.columns and pd.notna(last_row["pct_chg"]) else None
         kline = [{"date": str(r["date"]), "close": float(r["close"])}
                  for _, r in df.tail(kline_n).iterrows()]
-        dec = research.decision(code, offline=True) or {}
+        rep = research.stock_report(code, market_scores=ms, offline=True)
+        dec = research.decision(code, rep=rep, offline=True) or {}
         out.append({
             "code": code, "name": holdings._name_of(code),
             "last_price": last_price, "pct_chg": pct_chg, "kline": kline,
