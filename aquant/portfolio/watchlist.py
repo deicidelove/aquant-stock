@@ -16,8 +16,9 @@ def add(code: str) -> None:
             r = con.execute("SELECT 1 FROM watchlist WHERE code = ?", [code]).fetchone()
             if r:  # 已存在则直接返回
                 return
+    # 微秒精度时间戳：保证 ORDER BY added_ts 稳定复现插入序，不依赖 DuckDB rowid
     store.save("watchlist", pd.DataFrame([{
-        "code": code, "added_ts": datetime.now().isoformat(timespec="seconds")}]))
+        "code": code, "added_ts": datetime.now().isoformat()}]))
 
 
 def remove(code: str) -> int:
@@ -32,5 +33,5 @@ def remove(code: str) -> int:
 def list_codes() -> list[str]:
     if not store.has_table("watchlist"):
         return []
-    df = store.query("SELECT code FROM watchlist ORDER BY added_ts, rowid")
+    df = store.query("SELECT code FROM watchlist ORDER BY added_ts")
     return [str(c) for c in df["code"].tolist()]
