@@ -96,3 +96,27 @@ export const useSectorFund = () =>
   useQuery({ queryKey: ["m-sectorfund"], queryFn: api.getSectorFund, refetchInterval: live });
 export const useAbnormal = (scope = "stock", n = 20, z = 2) =>
   useQuery({ queryKey: ["m-abnormal", scope, n, z], queryFn: () => api.getAbnormal(scope, n, z), refetchInterval: live });
+
+export const useBoard = () =>
+  useQuery({ queryKey: ["board"], queryFn: api.getBoard, refetchInterval: live });
+
+export const useWatchlist = () =>
+  useQuery({ queryKey: ["watchlist"], queryFn: api.getWatchlist });
+
+function useInvalidateBoard() {
+  const qc = useQueryClient();
+  return () => {
+    qc.invalidateQueries({ queryKey: ["board"] });
+    qc.invalidateQueries({ queryKey: ["watchlist"] });
+  };
+}
+
+export const useAddWatch = () => {
+  const invalidate = useInvalidateBoard();
+  return useMutation({ mutationFn: api.addWatch, onSuccess: invalidate });
+};
+
+export const useRemoveWatch = () => {
+  const invalidate = useInvalidateBoard();
+  return useMutation({ mutationFn: api.removeWatch, onSuccess: invalidate });
+};
