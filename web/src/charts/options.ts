@@ -109,3 +109,47 @@ export function buildSparklineOption(kline: { date: string; close: number }[]): 
     series: [{ type: "line", showSymbol: false, data: closes, lineStyle: { color: up ? "#ef4444" : "#22c55e", width: 1.5 }, areaStyle: { opacity: 0.08, color: up ? "#ef4444" : "#22c55e" } }],
   };
 }
+
+export function buildIndexTrendOption(points: { date: string; close: number; ma20: number | null; ma60: number | null }[]): object {
+  return {
+    tooltip: { trigger: "axis" },
+    legend: { data: ["收盘", "MA20", "MA60"], top: 0, textStyle: { color: "#94a3b8" } },
+    grid: { left: 50, right: 16, top: 28, bottom: 40 },
+    xAxis: { type: "category", data: points.map((p) => p.date) },
+    yAxis: { type: "value", scale: true },
+    dataZoom: [{ type: "inside" }, { type: "slider" }],
+    series: [
+      { name: "收盘", type: "line", showSymbol: false, data: points.map((p) => p.close), lineStyle: { color: "#e5e7eb", width: 1.5 } },
+      { name: "MA20", type: "line", showSymbol: false, data: points.map((p) => p.ma20), lineStyle: { color: "#f59e0b", width: 1 } },
+      { name: "MA60", type: "line", showSymbol: false, data: points.map((p) => p.ma60), lineStyle: { color: "#38bdf8", width: 1 } },
+    ],
+  };
+}
+
+export function buildAmountBarOption(series: { date: string; amount: number }[]): object {
+  return {
+    tooltip: { trigger: "axis" },
+    grid: { left: 50, right: 16, top: 10, bottom: 30 },
+    xAxis: { type: "category", data: series.map((s) => s.date) },
+    yAxis: { type: "value", name: "亿元" },
+    series: [{
+      type: "bar",
+      data: series.map((s, i) => ({
+        value: s.amount,
+        itemStyle: { color: i > 0 && s.amount >= series[i - 1].amount ? "#ef4444" : "#64748b" },
+      })),
+    }],
+  };
+}
+
+export function buildBreadthBarOption(up: number, down: number): object {
+  return {
+    grid: { left: 60, right: 16, top: 6, bottom: 20 },
+    xAxis: { type: "value" },
+    yAxis: { type: "category", data: ["上涨", "下跌"] },
+    series: [{
+      type: "bar",
+      data: [{ value: up, itemStyle: { color: "#ef4444" } }, { value: down, itemStyle: { color: "#22c55e" } }],
+    }],
+  };
+}
