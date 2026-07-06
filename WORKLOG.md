@@ -6,6 +6,26 @@
 
 ---
 
+## 2026-07-06 v4 AI 多智能体投研报告（进行中·已暂停）
+
+**背景**：调研五个高星投研项目(TradingAgents ~80k / ai-hedge-fund ~59k / Vibe-Trading / Vibe-Research / Qlib)，结论=LLM多智能体投研是主流；aquant 数据底子(全A股+龙虎榜+消息面)更懂A股，缺的就是这层。
+
+**已定方向(用户确认)**：AI多智能体投研报告；LLM 走**本地 Ollama 优先** → 回退 `claude -p`(免key,已验证可用) → 规则降级。铁律：LLM异步生成+缓存，请求路径只读。
+
+**进度**：
+- spec `docs/superpowers/specs/2026-07-06-v4-ai-research-agents.md` 完成。
+- 分支 `v4a-ai-research-backend`(从 main 8fe8e00)；D1-T1 `test_llm_provider.py` 已写(chat: Ollama优先/claude回退/降级)，**实现未写**。
+- 本机现状：claude CLI 可用；**Ollama 未装**(brew 可用、105G 空间)，装 Ollama 需用户点头(约5GB qwen2.5:7b)，另行确认。
+
+**下一步(恢复时)**：
+1. 实现 `llm.chat` provider(Ollama urllib + claude 回退) → T1 绿。
+2. D1-T2 `aquant/analysts.py: ai_research`(4分析师+PM综合+多空辩论, mock chat 测试, 规则降级)。
+3. D1-T3 `research_report` 缓存表+读写；T4 job注册+`POST/GET /api/stock/{code}/ai-report`。
+4. D1 合并 main；D2 前端 AI报告区块(生成/轮询)。
+计划见 todo；jobs runner(`quant/jobs.py`) + `research_cache.py` 模式可复用。
+
+---
+
 ## 2026-07-05 v3.4 市场消息面 / 新闻情绪（资深股民三块最后一块）
 
 **已完成**：
