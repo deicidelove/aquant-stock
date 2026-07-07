@@ -96,3 +96,8 @@ export interface LhbStock { code: string; name: string | null; date: string | nu
 
 export interface NewsItem { time: string; title: string; summary: string; url: string; sent: number }
 export interface NewsSentiment { score: number; label: string; pos: number; neg: number; neutral: number; items: NewsItem[] }
+
+export interface AiVerdict { stance: string; reason: string; position: string | null; risks: string[] }
+export interface AiReport { code: string; name: string; as_of: string | null; analysts: Record<string, string>; debate: { bull: string; bear: string }; verdict: AiVerdict; llm_used: boolean }
+export interface AiReportResp { report: AiReport | null }
+export interface AiReportJob { job_id: string }
