@@ -13,3 +13,6 @@ web/vite.config.js
 web/vite.config.d.ts
 web/preview.log
 web/dev.log
+
+# 本地 Ollama 模型(几GB,放大盘,不进库)
+ollama_models/
