@@ -31,6 +31,7 @@ TABLE_KEYS: dict[str, list[str]] = {
     "factor_score": ["code", "as_of"],
     "news_cache": ["code", "as_of"],
     "market_news": ["time", "title"],
+    "research_report": ["code", "as_of"],
     "fund_context_cache": ["code", "as_of"],
     "trades": ["tid"],
     "quant_jobs": ["job_id"],

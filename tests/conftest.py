@@ -19,6 +19,7 @@ def _clean_trades():
         con.execute("DROP TABLE IF EXISTS lhb_detail")
         con.execute("DROP TABLE IF EXISTS lhb_seat")
         con.execute("DROP TABLE IF EXISTS market_news")
+        con.execute("DROP TABLE IF EXISTS research_report")
     yield
 
 

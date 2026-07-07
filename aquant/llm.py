@@ -5,15 +5,43 @@
 """
 from __future__ import annotations
 
+import json
+import os
 import shutil
 import subprocess
+import urllib.request
 
 CLAUDE_BIN = shutil.which("claude")
 TIMEOUT = 60
+OLLAMA_URL = os.getenv("AQUANT_OLLAMA_URL", "http://127.0.0.1:11434")
 
 
 def available() -> bool:
-    return CLAUDE_BIN is not None
+    return CLAUDE_BIN is not None or bool(os.getenv("AQUANT_OLLAMA_MODEL"))
+
+
+def _ollama_generate(prompt: str, model: str, timeout: int) -> str | None:
+    """调本地 Ollama /api/generate（stdlib，零新依赖）。"""
+    body = json.dumps({"model": model, "prompt": prompt, "stream": False}).encode()
+    req = urllib.request.Request(f"{OLLAMA_URL}/api/generate", data=body,
+                                 headers={"Content-Type": "application/json"})
+    with urllib.request.urlopen(req, timeout=timeout) as resp:
+        data = json.loads(resp.read().decode())
+    out = (data.get("response") or "").strip()
+    return out or None
+
+
+def chat(prompt: str, timeout: int = 120) -> str | None:
+    """provider 无关文本生成：Ollama(若配置) → claude -p → None。"""
+    model = os.getenv("AQUANT_OLLAMA_MODEL")
+    if model:
+        try:
+            out = _ollama_generate(prompt, model, timeout)
+            if out:
+                return out
+        except Exception:  # noqa: BLE001 Ollama 不可用则回退
+            pass
+    return _ask(prompt)
 
 
 def _ask(prompt: str) -> str | None:
