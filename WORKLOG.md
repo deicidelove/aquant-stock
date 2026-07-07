@@ -6,7 +6,16 @@
 
 ---
 
-## 2026-07-06 v4 AI 多智能体投研报告（进行中·已暂停）
+## 2026-07-06 v4 AI 多智能体投研报告 ✅ 完成
+
+**已交付**：
+- D1 后端(main 9054360)：`llm.chat` provider(Ollama优先urllib零依赖→claude-p→None)；`aquant/analysts.py:ai_research`(4分析师技术/资金含龙虎榜/消息含大盘情绪/基本面 + 多空辩论；规则给硬决策，LLM给叙事，无LLM规则降级)；`research_report`缓存表+读写；job kind `ai_research`+`POST/GET /api/stock/{code}/ai-report`(异步生成+只读缓存守离线铁律)。后端+10=95。
+- D2 前端：`AiReport`组件(生成→轮询→4分析师卡片+多空辩论红多绿空+结论徽章+仓位+风险+免责)接入StockDetail；前端+5=100。
+- 真实端到端：茅台报告4分析师视角各异、多空辩论有交锋，质量佳。claude-p串行6调用较慢(>45s)，Ollama可提速。
+
+**待用户定**：是否装 Ollama(brew install ollama + qwen2.5:7b ~5GB)以本地提速/离线。设 `AQUANT_OLLAMA_MODEL=qwen2.5:7b` 即自动启用。
+
+**历史记录（原暂停条目，已完成）**：
 
 **背景**：调研五个高星投研项目(TradingAgents ~80k / ai-hedge-fund ~59k / Vibe-Trading / Vibe-Research / Qlib)，结论=LLM多智能体投研是主流；aquant 数据底子(全A股+龙虎榜+消息面)更懂A股，缺的就是这层。
 
