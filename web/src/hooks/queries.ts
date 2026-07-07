@@ -138,3 +138,20 @@ export const useLhbStock = (code: string) =>
 
 export const useNewsSentiment = (limit = 30) =>
   useQuery({ queryKey: ["news-sentiment", limit], queryFn: () => api.getNewsSentiment(limit), refetchInterval: live });
+
+export const useAiReport = (code: string, polling = false) =>
+  useQuery({
+    queryKey: ["ai-report", code],
+    queryFn: () => api.getAiReport(code),
+    enabled: !!code,
+    // 生成中(已触发但缓存还没落)时每 3 秒轮询，落库后停
+    refetchInterval: (q) => (polling && !q.state.data?.report ? 3000 : false),
+  });
+
+export const useGenAiReport = (code: string) => {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: () => api.genAiReport(code),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["ai-report", code] }),
+  });
+};

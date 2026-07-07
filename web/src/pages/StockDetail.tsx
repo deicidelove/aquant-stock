@@ -3,6 +3,7 @@ import { useStockChart, useReport, useLhbStock } from "../hooks/queries";
 import ProKlineChart from "../components/ProKlineChart";
 import ReportPanel from "../components/ReportPanel";
 import LhbSeats from "../components/LhbSeats";
+import AiReport from "../components/AiReport";
 
 export default function StockDetail() {
   const { code = "" } = useParams();
@@ -19,6 +20,7 @@ export default function StockDetail() {
         {chart.isSuccess ? <ProKlineChart chart={chart.data} plan={plan} />
           : <div className="text-sm text-slate-400">{chart.isError ? "无K线数据" : "加载中…"}</div>}
       </section>
+      <AiReport code={code} />
       {report.isSuccess ? <ReportPanel decision={report.data.decision} />
         : <div className="text-sm text-slate-400">{report.isError ? "无研判数据" : "研判加载中…"}</div>}
       {hasLhb && (
