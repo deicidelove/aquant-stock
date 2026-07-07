@@ -16,3 +16,11 @@ class ChartResp(BaseModel):
     bars: list[dict]
     ma: dict
     macd: dict
+
+
+class AiReportJob(BaseModel):
+    job_id: str
+
+
+class AiReportResp(BaseModel):
+    report: dict | None

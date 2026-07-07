@@ -39,3 +39,19 @@ def read_context(code: str) -> dict:
     df = store.query("SELECT ctx_json FROM fund_context_cache WHERE code=? "
                      "ORDER BY as_of DESC LIMIT 1", [code])
     return json.loads(df["ctx_json"].iloc[0]) if not df.empty else {}
+
+
+def save_report(code: str, as_of: str, report: dict) -> int:
+    """存 AI 多智能体投研报告（按 code+as_of 覆盖）。"""
+    df = pd.DataFrame([{"code": code, "as_of": as_of,
+                        "report_json": json.dumps(report, ensure_ascii=False)}])
+    return store.save("research_report", df)
+
+
+def read_report(code: str) -> dict | None:
+    """读该股最新 AI 投研报告，无则 None。"""
+    if not store.has_table("research_report"):
+        return None
+    df = store.query("SELECT report_json FROM research_report WHERE code=? "
+                     "ORDER BY as_of DESC LIMIT 1", [code])
+    return json.loads(df["report_json"].iloc[0]) if not df.empty else None
