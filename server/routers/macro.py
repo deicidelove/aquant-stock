@@ -57,3 +57,17 @@ from server.schemas.macro import NewsSentimentResp
 @router.get("/news-sentiment", response_model=NewsSentimentResp)
 def news_sentiment(limit: int = 30) -> NewsSentimentResp:
     return NewsSentimentResp(**_sentiment.market_news_sentiment(limit=limit))
+
+
+from aquant import board as _board
+from server.schemas.macro import LimitLadderResp, NorthFlowResp
+
+
+@router.get("/limit-ladder", response_model=LimitLadderResp)
+def limit_ladder(date: str | None = None) -> LimitLadderResp:
+    return LimitLadderResp(**_board.limit_ladder(date=date))
+
+
+@router.get("/north-flow", response_model=NorthFlowResp)
+def north_flow(date: str | None = None) -> NorthFlowResp:
+    return NorthFlowResp(**_board.north_flow(date=date))

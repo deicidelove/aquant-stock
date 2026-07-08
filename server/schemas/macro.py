@@ -55,3 +55,18 @@ class NewsSentimentResp(BaseModel):
     neg: int
     neutral: int
     items: list[dict]
+
+
+class LimitLadderResp(BaseModel):
+    date: str | None
+    limit_up_count: int
+    seal_rate: float | None
+    break_rate: float | None
+    max_boards: int
+    ladder: list[dict]
+    by_industry: list[dict]
+
+
+class NorthFlowResp(BaseModel):
+    date: str | None
+    rows: list[dict]
