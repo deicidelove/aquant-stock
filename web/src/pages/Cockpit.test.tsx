@@ -11,6 +11,8 @@ vi.mock("../hooks/queries", () => ({
   useSectorFund: () => ({ isSuccess: true, data: { as_of: "d", rows: [{ sector: "医药", pct_chg: 2, main_net: 5e8, main_net_pct: 1, leader: "恒瑞" }] } }),
   useAbnormal: () => ({ isSuccess: true, data: { scope: "stock", rows: [] } }),
   useNewsSentiment: () => ({ isSuccess: true, data: { score: 50, label: "中性", pos: 0, neg: 0, neutral: 0, items: [] } }),
+  useLimitLadder: () => ({ isSuccess: true, data: { date: "d", limit_up_count: 23, seal_rate: 0.65, break_rate: 0.35, max_boards: 7, ladder: [{ boards: 7, count: 1, names: ["恒尚节能"] }], by_industry: [] } }),
+  useNorthFlow: () => ({ isSuccess: true, data: { date: "d", rows: [{ market: "沪股通", net: 0 }] } }),
 }));
 import Cockpit from "./Cockpit";
 
