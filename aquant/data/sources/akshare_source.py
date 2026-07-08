@@ -367,3 +367,35 @@ def lhb_seats(code: str, date: str, flag: str) -> pd.DataFrame:
         if col in out.columns:
             out[col] = pd.to_numeric(out[col], errors="coerce")
     return out
+
+
+# ---------------------------------------------------------------- 涨停梯队 / 北向
+
+@_robust
+def limit_pool(date: str) -> pd.DataFrame:
+    """涨停池（date=YYYY-MM-DD 或 YYYYMMDD）：连板数/封板资金/炸板次数/行业。"""
+    d = str(date).replace("-", "")
+    rename = {"代码": "code", "名称": "name", "涨跌幅": "pct_chg", "成交额": "amount",
+              "换手率": "turnover", "封板资金": "seal_fund", "炸板次数": "break_times",
+              "连板数": "boards", "所属行业": "industry", "首次封板时间": "first_seal_time"}
+    df = ak.stock_zt_pool_em(date=d).rename(columns=rename)
+    if "code" in df.columns:
+        df["code"] = df["code"].astype(str).str.zfill(6)
+    keep = [c for c in dict.fromkeys(rename.values()) if c in df.columns]
+    out = df[keep].copy()
+    for col in ("pct_chg", "amount", "turnover", "seal_fund", "break_times", "boards"):
+        if col in out.columns:
+            out[col] = pd.to_numeric(out[col], errors="coerce")
+    return out
+
+
+@_robust
+def north_summary() -> pd.DataFrame:
+    """北向资金汇总：market(沪股通/深股通/港股通…) + net(资金净流入)。"""
+    df = ak.stock_hsgt_fund_flow_summary_em().rename(
+        columns={"板块": "market", "资金净流入": "net"})
+    keep = [c for c in ("market", "net") if c in df.columns]
+    out = df[keep].copy()
+    if "net" in out.columns:
+        out["net"] = pd.to_numeric(out["net"], errors="coerce")
+    return out
