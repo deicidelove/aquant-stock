@@ -70,3 +70,14 @@ class LimitLadderResp(BaseModel):
 class NorthFlowResp(BaseModel):
     date: str | None
     rows: list[dict]
+
+
+class MarginResp(BaseModel):
+    date: str | None
+    total_fin: float | None
+    total_bal: float | None
+    series: list[dict]
+
+
+class BlockTradeResp(BaseModel):
+    rows: list[dict]

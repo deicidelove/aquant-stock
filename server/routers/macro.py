@@ -71,3 +71,16 @@ def limit_ladder(date: str | None = None) -> LimitLadderResp:
 @router.get("/north-flow", response_model=NorthFlowResp)
 def north_flow(date: str | None = None) -> NorthFlowResp:
     return NorthFlowResp(**_board.north_flow(date=date))
+
+
+from server.schemas.macro import MarginResp, BlockTradeResp
+
+
+@router.get("/margin", response_model=MarginResp)
+def margin(days: int = 20) -> MarginResp:
+    return MarginResp(**_board.margin_summary(days=days))
+
+
+@router.get("/block-trade", response_model=BlockTradeResp)
+def block_trade(days: int = 10) -> BlockTradeResp:
+    return BlockTradeResp(**_board.block_trade_recent(days=days))

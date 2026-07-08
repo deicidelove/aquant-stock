@@ -33,6 +33,8 @@ TABLE_KEYS: dict[str, list[str]] = {
     "market_news": ["time", "title"],
     "limit_pool": ["code", "date"],
     "north_flow": ["date", "market"],
+    "margin_balance": ["date", "market"],
+    "block_trade": ["date"],
     "research_report": ["code", "as_of"],
     "fund_context_cache": ["code", "as_of"],
     "trades": ["tid"],

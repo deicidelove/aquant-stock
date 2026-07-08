@@ -22,6 +22,8 @@ def _clean_trades():
         con.execute("DROP TABLE IF EXISTS research_report")
         con.execute("DROP TABLE IF EXISTS limit_pool")
         con.execute("DROP TABLE IF EXISTS north_flow")
+        con.execute("DROP TABLE IF EXISTS margin_balance")
+        con.execute("DROP TABLE IF EXISTS block_trade")
     yield
 
 
