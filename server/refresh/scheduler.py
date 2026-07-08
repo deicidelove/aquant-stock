@@ -53,6 +53,11 @@ def _eod_job() -> None:
         refresh_block_trade()
     except Exception:  # noqa: BLE001
         pass
+    try:
+        from aquant.track.log import snapshot
+        snapshot()  # 每日推荐落库 picks_log，维持推股闭环
+    except Exception:  # noqa: BLE001
+        pass
 
 
 def build_scheduler() -> BackgroundScheduler:

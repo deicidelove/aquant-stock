@@ -8,3 +8,10 @@ class BriefingResp(BaseModel):
 class ScorecardResp(BaseModel):
     as_of: str | None
     rows: list[dict]
+
+
+class ScorecardSummaryResp(BaseModel):
+    sample: dict
+    horizons: list[dict]
+    rank_ic: list[dict]
+    delisted: int
