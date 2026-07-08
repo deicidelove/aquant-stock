@@ -143,6 +143,10 @@ export const useLimitLadder = () =>
   useQuery({ queryKey: ["limit-ladder"], queryFn: api.getLimitLadder, refetchInterval: live });
 export const useNorthFlow = () =>
   useQuery({ queryKey: ["north-flow"], queryFn: api.getNorthFlow, refetchInterval: live });
+export const useMargin = (days = 20) =>
+  useQuery({ queryKey: ["margin", days], queryFn: () => api.getMargin(days), refetchInterval: live });
+export const useBlockTrade = (days = 10) =>
+  useQuery({ queryKey: ["block-trade", days], queryFn: () => api.getBlockTrade(days), refetchInterval: live });
 
 export const useAiReport = (code: string, polling = false) =>
   useQuery({
