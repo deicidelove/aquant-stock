@@ -6,6 +6,21 @@
 
 ---
 
+## 2026-07-08 v7 推股闭环 Phase1：效果看板 + 恢复落库
+
+**背景**：需求"推股"闭环=推荐→跟踪→复盘→优化。发现 `track/log(落库)`+`track/evaluate(前向收益/超额/Rank-IC)` 已存在但①snapshot 未接新调度(落库停在2026-06-10)②聚合记分卡只输出markdown、只接旧Streamlit，新API只返回原始台账。
+
+**已完成**：
+- `evaluate.scorecard_data`：结构化聚合(样本/各持有期超额·胜率·绝对收益/Live Rank-IC·IR/退市)，与markdown同口径纯读。
+- API `/api/assist/scorecard-summary`；`snapshot()` 接回 EOD 调度恢复每日落库。
+- 前端 `ScorecardSummary`(超额表+Rank-IC表+退市注)接入复盘页顶部。
+- 后端+4(122)、前端+2(110)全绿+build+e2e。真实：780条/26快照 T+60平均超额+2.92%胜率44.7%(诚实呈现)。
+
+**推股闭环 Phase2(留后续)**：按效果反推因子权重自动优化。
+**其他候选**：持仓VaR/CVaR优化 / Qlib因子 / 腾讯快照兜底。
+
+---
+
 ## 2026-07-08 v6 数据层 Phase2：融资融券 + 大宗（驾驶舱）
 
 **已完成**：

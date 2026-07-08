@@ -44,6 +44,12 @@ export interface BriefingRow { code: string; name: string; [k: string]: unknown 
 export interface BriefingResp { rows: BriefingRow[] }
 
 export interface ScorecardResp { as_of: string | null; rows: Record<string, unknown>[] }
+export interface ScorecardSummary {
+  sample: { picks: number; snapshots: number; start: string | null; end: string | null; live: number; replay: number };
+  horizons: { h: number; settled: number; pending: number; mean_excess: number | null; win_rate: number | null; mean_ret: number | null }[];
+  rank_ic: { h: number; n: number; mean_ic: number | null; ir: number | null }[];
+  delisted: number;
+}
 
 export type QuantWeights = { ic: Record<string, number>; momentum: Record<string, number> };
 

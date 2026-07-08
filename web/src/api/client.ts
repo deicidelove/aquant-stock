@@ -1,6 +1,6 @@
 import type {
   Overview, Sectors, TopScores, Picks, Kline, Report,
-  HoldingsResp, TradesResp, Pnl, TradeInput, BriefingResp, ScorecardResp,
+  HoldingsResp, TradesResp, Pnl, TradeInput, BriefingResp, ScorecardResp, ScorecardSummary,
   QuantWeights, BacktestParams, BacktestResult, FactorIcResult, QuantJob,
   IndicesResp, Sentiment, MarketFund, SectorFund, Abnormal,
   Regime, IndexSeries, AmountTrend, StockChart,
@@ -38,6 +38,7 @@ export const addTrade = (input: TradeInput) => apiSend<{ tid: number }>("/holdin
 export const deleteTrade = (tid: number) => apiSend<{ deleted: number }>(`/holdings/trade/${tid}`, "DELETE");
 export const getBriefing = (top = 12) => apiGet<BriefingResp>(`/assist/briefing?top=${top}`);
 export const getScorecard = () => apiGet<ScorecardResp>("/assist/scorecard");
+export const getScorecardSummary = () => apiGet<ScorecardSummary>("/assist/scorecard-summary");
 
 export const getQuantWeights = () => apiGet<QuantWeights>("/quant/weights");
 export const submitBacktest = (params: BacktestParams) => apiSend<{ job_id: string }>("/quant/backtest", "POST", params);
