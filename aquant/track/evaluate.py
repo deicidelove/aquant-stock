@@ -88,6 +88,58 @@ def forward_returns(horizons=HORIZONS) -> pd.DataFrame:
     return out
 
 
+def scorecard_data(horizons=HORIZONS, min_names: int = 5) -> dict:
+    """结构化记分卡（供 API）。与 markdown scorecard 同口径，纯读现算。"""
+    empty = {"sample": {"picks": 0, "snapshots": 0, "start": None, "end": None,
+                        "live": 0, "replay": 0},
+             "horizons": [], "rank_ic": [], "delisted": 0}
+    fr = forward_returns(horizons)
+    if fr.empty:
+        return empty
+
+    sample = {
+        "picks": int(len(fr)),
+        "snapshots": int(fr["as_of"].nunique()),
+        "start": str(fr["as_of"].min()),
+        "end": str(fr["as_of"].max()),
+        "live": int((fr["signal"] != "reconstruct").sum()),
+        "replay": int((fr["signal"] == "reconstruct").sum()),
+    }
+
+    hz = []
+    for h in horizons:
+        exc = fr[f"exc_{h}"].dropna()
+        fwd = fr[f"fwd_{h}"].dropna()
+        hz.append({
+            "h": int(h),
+            "settled": int(len(exc)),
+            "pending": int(fr[f"fwd_{h}"].isna().sum()),
+            "mean_excess": round(float(exc.mean()), 4) if not exc.empty else None,
+            "win_rate": round(float((exc > 0).mean()), 4) if not exc.empty else None,
+            "mean_ret": round(float(fwd.mean()), 4) if not fwd.empty else None,
+        })
+
+    ric = []
+    for h in horizons:
+        ics = []
+        for _, g in fr.groupby("as_of"):
+            sub = g[["score", f"fwd_{h}"]].dropna()
+            if len(sub) >= min_names:
+                ics.append(sub["score"].corr(sub[f"fwd_{h}"], method="spearman"))
+        ics = pd.Series(ics).dropna()
+        if ics.empty:
+            ric.append({"h": int(h), "n": 0, "mean_ic": None, "ir": None})
+            continue
+        std = ics.std(ddof=0)
+        ir = float(ics.mean() / std) if std else None
+        ric.append({"h": int(h), "n": int(len(ics)),
+                    "mean_ic": round(float(ics.mean()), 4),
+                    "ir": round(ir, 3) if ir is not None else None})
+
+    return {"sample": sample, "horizons": hz, "rank_ic": ric,
+            "delisted": int(fr["delisted"].sum())}
+
+
 def scorecard(horizons=HORIZONS, min_names: int = 5) -> str:
     """live 记分卡（markdown）：Top-N 平均超额(外部有效性) + live Rank-IC(池内排序)。"""
     fr = forward_returns(horizons)

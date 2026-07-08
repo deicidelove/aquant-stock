@@ -2,7 +2,7 @@ from fastapi import APIRouter
 
 from aquant import research
 from aquant.track import evaluate
-from server.schemas.assist import BriefingResp, ScorecardResp
+from server.schemas.assist import BriefingResp, ScorecardResp, ScorecardSummaryResp
 
 router = APIRouter(prefix="/api/assist", tags=["assist"])
 
@@ -20,3 +20,8 @@ def scorecard() -> ScorecardResp:
         return ScorecardResp(as_of=None, rows=[])
     as_of = str(df["as_of"].iloc[0]) if "as_of" in df.columns else None
     return ScorecardResp(as_of=as_of, rows=df.to_dict(orient="records"))
+
+
+@router.get("/scorecard-summary", response_model=ScorecardSummaryResp)
+def scorecard_summary() -> ScorecardSummaryResp:
+    return ScorecardSummaryResp(**evaluate.scorecard_data())
