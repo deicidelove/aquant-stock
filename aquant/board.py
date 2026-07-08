@@ -60,6 +60,45 @@ def north_flow(date: str | None = None) -> dict:
     return {"date": date, "rows": rows}
 
 
+def margin_summary(days: int = 20) -> dict:
+    """两市融资融券：最新合计(亿) + 融资余额趋势(按日汇总各市场)。"""
+    empty = {"date": None, "total_fin": None, "total_bal": None, "series": []}
+    if not store.has_table("margin_balance"):
+        return empty
+    df = store.query("SELECT date, fin_balance, total_balance FROM margin_balance")
+    if df.empty:
+        return empty
+    g = (df.groupby("date").agg(fin=("fin_balance", "sum"), bal=("total_balance", "sum"))
+         .sort_index().reset_index())
+    g = g.tail(days)
+    series = [{"date": r["date"], "total_fin": round(_f(r["fin"]) / 1e8, 1)}
+              for _, r in g.iterrows()]
+    last = g.iloc[-1]
+    return {"date": str(last["date"]),
+            "total_fin": round(_f(last["fin"]) / 1e8, 1),
+            "total_bal": round(_f(last["bal"]) / 1e8, 1),
+            "series": series}
+
+
+def block_trade_recent(days: int = 10) -> dict:
+    """近期大宗交易统计（亿）。"""
+    if not store.has_table("block_trade"):
+        return {"rows": []}
+    df = store.query(
+        "SELECT date, total_amount, premium_amount, discount_amount "
+        "FROM block_trade ORDER BY date DESC LIMIT ?", [days])
+    rows = []
+    for _, r in df.iterrows():
+        tot = _f(r["total_amount"])
+        prem = _f(r["premium_amount"])
+        # 自算溢价占比（原始字段单位不一致，不可信）
+        ratio = round(prem / tot, 3) if tot and prem is not None and tot > 0 else None
+        rows.append({"date": r["date"],
+                     "total_amount": round(tot / 1e8, 1) if tot is not None else None,
+                     "premium_ratio": ratio})
+    return {"rows": rows}
+
+
 def _f(v):
     try:
         import pandas as pd

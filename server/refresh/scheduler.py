@@ -47,6 +47,12 @@ def _eod_job() -> None:
         refresh_lhb()
     except Exception:  # noqa: BLE001
         pass
+    try:
+        from server.refresh.board_data import refresh_margin, refresh_block_trade
+        refresh_margin()
+        refresh_block_trade()
+    except Exception:  # noqa: BLE001
+        pass
 
 
 def build_scheduler() -> BackgroundScheduler:

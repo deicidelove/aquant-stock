@@ -399,3 +399,54 @@ def north_summary() -> pd.DataFrame:
     if "net" in out.columns:
         out["net"] = pd.to_numeric(out["net"], errors="coerce")
     return out
+
+
+# ---------------------------------------------------------------- 融资融券 / 大宗
+
+def _yyyymmdd_to_date(s: pd.Series) -> pd.Series:
+    return pd.to_datetime(s.astype(str), format="%Y%m%d", errors="coerce").dt.strftime("%Y-%m-%d")
+
+
+@_robust
+def margin_sse(start: str, end: str) -> pd.DataFrame:
+    """上交所融资融券（区间，YYYYMMDD）：date/fin_balance(融资余额)/total_balance(融资融券余额)。"""
+    df = ak.stock_margin_sse(start_date=start, end_date=end).rename(
+        columns={"信用交易日期": "date", "融资余额": "fin_balance", "融资融券余额": "total_balance"})
+    keep = [c for c in ("date", "fin_balance", "total_balance") if c in df.columns]
+    out = df[keep].copy()
+    out["date"] = _yyyymmdd_to_date(out["date"])
+    for col in ("fin_balance", "total_balance"):
+        out[col] = pd.to_numeric(out[col], errors="coerce")
+    return out
+
+
+@_robust
+def margin_szse(date: str) -> pd.DataFrame:
+    """深交所融资融券（按日，YYYY-MM-DD 或 YYYYMMDD）。汇总行取融资余额/融资融券余额。"""
+    d = str(date).replace("-", "")
+    df = ak.stock_margin_szse(date=d).rename(
+        columns={"融资余额": "fin_balance", "融资融券余额": "total_balance"})
+    keep = [c for c in ("fin_balance", "total_balance") if c in df.columns]
+    out = df[keep].copy()
+    for col in keep:
+        out[col] = pd.to_numeric(out[col], errors="coerce")
+    # 深交所返回按标的多行，汇总为一行
+    agg = {c: out[c].sum() for c in keep}
+    agg["date"] = f"{d[:4]}-{d[4:6]}-{d[6:]}"
+    return pd.DataFrame([agg])
+
+
+@_robust
+def block_trade_stat() -> pd.DataFrame:
+    """大宗交易每日统计（全市场）：date/total_amount/premium_amount/discount_amount/premium_ratio。"""
+    df = ak.stock_dzjy_sctj().rename(columns={
+        "交易日期": "date", "大宗交易成交总额": "total_amount", "溢价成交总额": "premium_amount",
+        "溢价成交总额占比": "premium_ratio", "折价成交总额": "discount_amount"})
+    keep = [c for c in ("date", "total_amount", "premium_amount", "discount_amount", "premium_ratio")
+            if c in df.columns]
+    out = df[keep].copy()
+    out["date"] = pd.to_datetime(out["date"], errors="coerce").dt.strftime("%Y-%m-%d")
+    for col in ("total_amount", "premium_amount", "discount_amount", "premium_ratio"):
+        if col in out.columns:
+            out[col] = pd.to_numeric(out[col], errors="coerce")
+    return out
