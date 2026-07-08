@@ -1,4 +1,4 @@
-import { useRegime, useIndexSeries, useAmountTrend, useSentiment, useMarketFund, useSectorFund, useAbnormal, useLimitLadder, useNorthFlow } from "../hooks/queries";
+import { useRegime, useIndexSeries, useAmountTrend, useSentiment, useMarketFund, useSectorFund, useAbnormal, useLimitLadder, useNorthFlow, useMargin, useBlockTrade } from "../hooks/queries";
 import { isTradingHours } from "../lib/tradingHours";
 import { UpdatedAt } from "../ui/atoms";
 import RegimePanel from "../components/macro/RegimePanel";
@@ -10,6 +10,8 @@ import SectorFundPanel from "../components/macro/SectorFundPanel";
 import AbnormalPanel from "../components/macro/AbnormalPanel";
 import LimitLadderPanel from "../components/macro/LimitLadderPanel";
 import NorthFlowPanel from "../components/macro/NorthFlowPanel";
+import MarginPanel from "../components/macro/MarginPanel";
+import BlockTradePanel from "../components/macro/BlockTradePanel";
 import NewsSentiment from "../components/NewsSentiment";
 
 export default function Cockpit() {
@@ -22,6 +24,8 @@ export default function Cockpit() {
   const abnormal = useAbnormal("stock");
   const ladder = useLimitLadder();
   const north = useNorthFlow();
+  const margin = useMargin();
+  const blockTrade = useBlockTrade();
   const now = new Date();
   return (
     <div className="space-y-4 p-4">
@@ -36,6 +40,8 @@ export default function Cockpit() {
         {sentiment.isSuccess && <SentimentPanel data={sentiment.data} />}
         {ladder.isSuccess && <LimitLadderPanel data={ladder.data} />}
         {north.isSuccess && <NorthFlowPanel data={north.data} />}
+        {margin.isSuccess && <MarginPanel data={margin.data} />}
+        {blockTrade.isSuccess && <BlockTradePanel data={blockTrade.data} />}
         {marketFund.isSuccess && <MarketFundPanel data={marketFund.data} />}
         {sectorFund.isSuccess && <SectorFundPanel data={sectorFund.data} />}
         {abnormal.isSuccess && <AbnormalPanel data={abnormal.data} />}

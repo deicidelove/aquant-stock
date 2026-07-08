@@ -5,7 +5,7 @@ import type {
   IndicesResp, Sentiment, MarketFund, SectorFund, Abnormal,
   Regime, IndexSeries, AmountTrend, StockChart,
   BoardResp, WatchlistResp, LhbToday, LhbStock, NewsSentiment,
-  AiReportResp, AiReportJob, LimitLadder, NorthFlow,
+  AiReportResp, AiReportJob, LimitLadder, NorthFlow, Margin, BlockTrade,
 } from "./types";
 
 async function apiGet<T>(path: string): Promise<T> {
@@ -69,6 +69,8 @@ export const getNewsSentiment = (limit = 30) => apiGet<NewsSentiment>(`/cockpit/
 
 export const getLimitLadder = () => apiGet<LimitLadder>(`/cockpit/limit-ladder`);
 export const getNorthFlow = () => apiGet<NorthFlow>(`/cockpit/north-flow`);
+export const getMargin = (days = 20) => apiGet<Margin>(`/cockpit/margin?days=${days}`);
+export const getBlockTrade = (days = 10) => apiGet<BlockTrade>(`/cockpit/block-trade?days=${days}`);
 
 export const getAiReport = (code: string) => apiGet<AiReportResp>(`/stock/${code}/ai-report`);
 export const genAiReport = (code: string) => apiSend<AiReportJob>(`/stock/${code}/ai-report`, "POST");

@@ -6,6 +6,20 @@
 
 ---
 
+## 2026-07-08 v6 数据层 Phase2：融资融券 + 大宗（驾驶舱）
+
+**已完成**：
+- source `margin_sse(区间)`/`margin_szse(按日汇总)`/`block_trade_stat`；store `margin_balance[date,market]`/`block_trade[date]`；refresh 挂 EOD(sz 失败不影响 sh)。
+- `board.margin_summary`(两市融资余额合计+趋势,折算亿) + `block_trade_recent`(**自算**溢价占比,原始"占比"字段单位不一致不可信)。
+- API `/api/cockpit/margin`+`/block-trade`；驾驶舱加 MarginPanel(余额+迷你趋势线) + BlockTradePanel(折溢价)。
+- 后端+12(118)、前端+4(108)全绿+build+e2e。真实：两市融资余额14882亿。
+
+**数据层进度**：涨停梯队/北向(v5) + 融资融券/大宗(v6) 已入驾驶舱。腾讯主源可靠性兜底(已验证代理下可用)与 mootdx/Level2 留后续。
+
+**下一步候选**：腾讯快照兜底(可靠性) / 转板块：推股闭环 / 持仓VaR优化 / Qlib因子。
+
+---
+
 ## 2026-07-08 v5 数据层升级 Phase1：涨停梯队 + 北向（驾驶舱）
 
 **背景**：调研 a-stock-data(40端点/13源) 后定数据层为地基。Phase1 选 akshare 零新依赖可得的两块。

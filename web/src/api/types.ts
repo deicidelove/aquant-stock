@@ -101,6 +101,9 @@ export interface LadderRow { boards: number; count: number; names: string[] }
 export interface LimitLadder { date: string | null; limit_up_count: number; seal_rate: number | null; break_rate: number | null; max_boards: number; ladder: LadderRow[]; by_industry: { industry: string; count: number }[] }
 export interface NorthFlow { date: string | null; rows: { market: string; net: number | null }[] }
 
+export interface Margin { date: string | null; total_fin: number | null; total_bal: number | null; series: { date: string; total_fin: number }[] }
+export interface BlockTrade { rows: { date: string; total_amount: number | null; premium_ratio: number | null }[] }
+
 export interface AiVerdict { stance: string; reason: string; position: string | null; risks: string[] }
 export interface AiReport { code: string; name: string; as_of: string | null; analysts: Record<string, string>; debate: { bull: string; bear: string }; verdict: AiVerdict; llm_used: boolean }
 export interface AiReportResp { report: AiReport | null }

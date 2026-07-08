@@ -13,6 +13,8 @@ vi.mock("../hooks/queries", () => ({
   useNewsSentiment: () => ({ isSuccess: true, data: { score: 50, label: "中性", pos: 0, neg: 0, neutral: 0, items: [] } }),
   useLimitLadder: () => ({ isSuccess: true, data: { date: "d", limit_up_count: 23, seal_rate: 0.65, break_rate: 0.35, max_boards: 7, ladder: [{ boards: 7, count: 1, names: ["恒尚节能"] }], by_industry: [] } }),
   useNorthFlow: () => ({ isSuccess: true, data: { date: "d", rows: [{ market: "沪股通", net: 0 }] } }),
+  useMargin: () => ({ isSuccess: true, data: { date: "d", total_fin: 14882.3, total_bal: 15026, series: [] } }),
+  useBlockTrade: () => ({ isSuccess: true, data: { rows: [] } }),
 }));
 import Cockpit from "./Cockpit";
 
