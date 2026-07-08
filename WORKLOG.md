@@ -6,6 +6,19 @@
 
 ---
 
+## 2026-07-08 v5 数据层升级 Phase1：涨停梯队 + 北向（驾驶舱）
+
+**背景**：调研 a-stock-data(40端点/13源) 后定数据层为地基。Phase1 选 akshare 零新依赖可得的两块。
+
+**已完成**：
+- source `limit_pool(涨停池:连板/封板资金/炸板/行业)` + `north_summary(北向)`；store `limit_pool[code,date]`/`north_flow[date,market]`；refresh 挂盘中 job。
+- `aquant/board.py`：`limit_ladder`(连板梯队/封板率/炸板率/涨停家数/行业分布) + `north_flow`，只读。
+- API `/api/cockpit/limit-ladder` + `/north-flow`；驾驶舱加 LimitLadderPanel(阶梯柱+情绪 Stat+行业标签) + NorthFlowPanel。
+- 后端+11(106)、前端+6(104)全绿+build+e2e。真实：今日23家涨停最高7板(恒尚节能)封板率0.652。
+- 口径诚实：北向实时分钟2024-08停发，沪深股通取0，前端注明。
+
+**下一步(数据层后续Phase / 或转其他板块)**：mootdx/腾讯主源可靠性迁移、融资融券/大宗/Level2；或按需求分析做 推股闭环 / 持仓优化 / 量化因子。
+
 ## 2026-07-06 v4 AI 多智能体投研报告 ✅ 完成
 
 **已交付**：

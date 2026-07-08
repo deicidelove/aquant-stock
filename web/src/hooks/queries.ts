@@ -139,6 +139,11 @@ export const useLhbStock = (code: string) =>
 export const useNewsSentiment = (limit = 30) =>
   useQuery({ queryKey: ["news-sentiment", limit], queryFn: () => api.getNewsSentiment(limit), refetchInterval: live });
 
+export const useLimitLadder = () =>
+  useQuery({ queryKey: ["limit-ladder"], queryFn: api.getLimitLadder, refetchInterval: live });
+export const useNorthFlow = () =>
+  useQuery({ queryKey: ["north-flow"], queryFn: api.getNorthFlow, refetchInterval: live });
+
 export const useAiReport = (code: string, polling = false) =>
   useQuery({
     queryKey: ["ai-report", code],
