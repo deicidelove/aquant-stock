@@ -7,6 +7,7 @@ vi.mock("../hooks/queries", () => ({
   useTopScores: () => ({ isSuccess: true, data: { as_of: "2026-06-23", rows: [{ code: "000001", name: "平安", score: 2.5 }] } }),
   useBriefing: () => ({ isSuccess: true, data: { rows: [{ code: "600000", name: "浦发", 综合分: 1.2, 信号: "买入/增持" }] } }),
   useScorecard: () => ({ isSuccess: true, data: { as_of: "2026-06-01", rows: [{ as_of: "2026-06-01", code: "600000", rank: 1 }] } }),
+  useScorecardSummary: () => ({ isSuccess: true, data: { sample: { picks: 0, snapshots: 0, start: null, end: null, live: 0, replay: 0 }, horizons: [], rank_ic: [], delisted: 0 } }),
   usePnl: () => ({ isSuccess: true, data: { realized: 0, unrealized: 100, total: 100 } }),
 }));
 import AssistPicks from "./AssistPicks";

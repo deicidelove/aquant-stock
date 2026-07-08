@@ -36,6 +36,8 @@ export const useBriefing = (top = 12) =>
 
 export const useScorecard = () =>
   useQuery({ queryKey: ["scorecard"], queryFn: api.getScorecard });
+export const useScorecardSummary = () =>
+  useQuery({ queryKey: ["scorecard-summary"], queryFn: api.getScorecardSummary });
 
 function useInvalidateHoldings() {
   const qc = useQueryClient();
